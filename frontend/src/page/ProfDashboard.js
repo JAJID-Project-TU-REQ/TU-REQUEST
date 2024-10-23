@@ -4,9 +4,6 @@ import axios from 'axios';
 import ProfessorForms from './reqpage/ProfessorForms';
 
 export default function ProfDashboard(){
-  const [forms, setForms] = useState({forms});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
       
         // const handleSubmit = (id) => {
         //   //เปลียนไส้
@@ -76,7 +73,8 @@ export default function ProfDashboard(){
         </tr>
       </thead>
       <tbody>
-        <td>{forms.ProfessorForms["Title"]}</td>
+        <ProfessorForms professorName="somchai"/>
+        <td></td>
         <td></td>
         <td></td>
         <td></td>

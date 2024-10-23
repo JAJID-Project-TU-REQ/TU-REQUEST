@@ -35,7 +35,7 @@ function ProfessorForms({ professorName }) {
   // Display the list of forms
   return (
     <div>
-      {/* <h2>Forms for Professor: {professorName}</h2>
+      <h2>Forms for Professor: {professorName}</h2>
       {forms.length > 0 ? (
         <ul>
           {forms.map((form) => (
@@ -49,8 +49,7 @@ function ProfessorForms({ professorName }) {
         </ul>
       ) : (
         <p>No forms found for this professor.</p>
-      )} */}
-      {forms}
+      )}
     </div>
   );
 }
