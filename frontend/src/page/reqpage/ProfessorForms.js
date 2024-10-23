@@ -35,15 +35,15 @@ function ProfessorForms({ professorName }) {
   // Display the list of forms
   return (
     <div>
-      <h2>Forms for Professor: {professorName}</h2>
+      {/* <h2>Forms for Professor: {professorName}</h2> */}
       {forms.length > 0 ? (
         <ul>
           {forms.map((form) => (
             <li key={form.id}>
-              <p>Title: {form.title}</p>
-              <p>Semester: {form.semester} {form.semester_year}</p>
-              <p>Subject: {form.subject}</p>
-              <p>Status: {form.status}</p>
+              <p>{form.title}</p>
+              <p>{form.subject}</p>
+              <p>{form.section}</p>
+              <p>{form.status}</p>
             </li>
           ))}
         </ul>

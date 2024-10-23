@@ -67,9 +67,9 @@ export default function ProfDashboard(){
       <thead>
         <tr>
           <th>Title</th>
-          <th>Status</th>
-          <th>Section</th>
           <th>Subject</th>
+          <th>Section</th>
+          <th>Status</th>
         </tr>
       </thead>
       <tbody>
