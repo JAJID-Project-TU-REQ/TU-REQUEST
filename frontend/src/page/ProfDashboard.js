@@ -4,6 +4,11 @@ import axios from 'axios';
 import ProfessorForms from './reqpage/ProfessorForms';
 
 export default function ProfDashboard(){
+
+  const [forms, setForms] = useState([]);
+  const handleFormsFetched = (fetchedForms) => {
+    setForms(fetchedForms); // Update state with the fetched forms
+  };
       
         // const handleSubmit = (id) => {
         //   //เปลียนไส้
@@ -18,6 +23,8 @@ export default function ProfDashboard(){
             <h1>PENDING REQUEST</h1>
             <h2>คำร้องรอการอนุมัติ</h2>
             //now call data yet.must call then map
+            {/* Fetch and pass the professor's name */}
+            <ProfessorForms professorName="somchai" onFormsFetched={handleFormsFetched} />
             <table>
                 <thead>
                     <tr>
@@ -73,11 +80,20 @@ export default function ProfDashboard(){
         </tr>
       </thead>
       <tbody>
-        <ProfessorForms professorName="somchai"/>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        {forms.length > 0 ? (
+            forms.map((form) => (
+              <tr key={form.id}>
+                <td>{form.title}</td>
+                <td>{form.subject}</td>
+                <td>{form.section}</td>
+                <td>{form.status}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="4">No forms found for this professor.</td>
+            </tr>
+        )}
       </tbody>
     </table>
     </div>

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function ProfessorForms({ professorName }) {
-  const [forms, setForms] = useState([]);
+function ProfessorForms({ professorName, onFormsFetched }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -11,7 +10,8 @@ function ProfessorForms({ professorName }) {
     const fetchForms = async () => {
       try {
         const response = await axios.get(`http://localhost:8000/forms/professor/${professorName}`);
-        setForms(response.data); // Save the fetched forms in state
+        console.log("API Response:", response.data);  // Log the response here
+        onFormsFetched(response.data); // Send the fetched data back to the parent
       } catch (error) {
         setError(error.response ? error.response.data.detail : error.message);
       } finally {
@@ -33,25 +33,7 @@ function ProfessorForms({ professorName }) {
   }
 
   // Display the list of forms
-  return (
-    <div>
-      {/* <h2>Forms for Professor: {professorName}</h2> */}
-      {forms.length > 0 ? (
-        <ul>
-          {forms.map((form) => (
-            <li key={form.id}>
-              <p>{form.title}</p>
-              <p>{form.subject}</p>
-              <p>{form.section}</p>
-              <p>{form.status}</p>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No forms found for this professor.</p>
-      )}
-    </div>
-  );
+  return null;
 }
 
 export default ProfessorForms;
