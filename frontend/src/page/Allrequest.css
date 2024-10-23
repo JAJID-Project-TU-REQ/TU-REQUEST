@@ -1,0 +1,9 @@
+   .request-container{
+    height: 3200px;
+    min-width: 400 px;
+    background-color: rgb(214, 214, 214);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:center;
+    align-items: center;
+  }

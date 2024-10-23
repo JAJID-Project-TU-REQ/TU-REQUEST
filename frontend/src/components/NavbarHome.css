@@ -1,0 +1,51 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-image: linear-gradient(rgb(179, 1, 1), rgb(36, 0, 0));
+    color: white;
+    padding: 10px;
+  }
+  
+  .home-buton{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: white;
+    font-size: 18px;
+    background: transparent; 
+    border: 2px;
+    padding: 5px 10px;
+    transition: color 0.3s ease;
+  }
+
+  .reques-information-button{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: white;
+    font-size: 18px;
+    background: transparent; 
+    border: 2px;
+    padding: 5px 10px;
+    transition: color 0.3s ease;
+  }
+
+  .history-button {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: white;
+    font-size: 18px;
+    background: transparent; 
+    border: 2px;
+    padding: 5px 10px;
+    transition: color 0.3s ease;
+  }
+  

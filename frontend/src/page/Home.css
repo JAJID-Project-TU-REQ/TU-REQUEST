@@ -1,0 +1,12 @@
+.home-button {
+    width: 200px; 
+    height: 100px; /* Adjust height for large buttons */
+    background-color: #f0c040; /* Example background color */
+    border: none; /* Remove border */
+    border-radius: 10px; /* Rounded corners */
+    font-size: 20px; /* Large font size */
+    margin: 10px; /* Space around each button */
+    cursor: pointer; /* Pointer cursor on hover */
+    flex: 1 1 calc(33.333% - 20px); /* 3 buttons per row, adjust for margin */
+    max-width: 200px; /* Optional: prevent buttons from being too wide */
+  }

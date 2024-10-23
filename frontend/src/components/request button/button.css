@@ -1,0 +1,22 @@
+.img-default{
+    width: 75 px ;
+    height: 75 px;
+}
+.default-button{
+    background-image: linear-gradient(rgb(179, 1, 1), rgb(36, 0, 0));
+    padding: 120px 65px;
+    border-radius: 12px;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+}
+.req-title{
+    vertical-align: text-top;
+    
+}
+.req-description{
+    vertical-align: text-top;
+}

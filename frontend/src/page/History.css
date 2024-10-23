@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .request-section {
+    margin: 20px;
+  }
+  
+  .request-header {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  .request-date {
+    flex: 0 0 150px; /* Adjust the width of the sent date column */
+    font-weight: bold;
+    font-size: 18px;
+    text-align: left;
+    color: #666;
+  }
+  
+  .request-title {
+    flex: 1;
+    font-size: 20px;
+    font-weight: bold;
+    padding-left: 10px;
+  }
+  
+  .request-details {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-top: none;
+    background-color: #fafafa;
+  }
+  
