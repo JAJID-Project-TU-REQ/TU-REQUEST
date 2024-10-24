@@ -22,7 +22,7 @@ export default function ProfDashboard(){
         <div>
             <h1>PENDING REQUEST</h1>
             <h2>คำร้องรอการอนุมัติ</h2>
-            //now call data yet.must call then map
+            {/* //now call data yet.must call then map */}
             {/* Fetch and pass the professor's name */}
             <ProfessorForms professorName="somchai" onFormsFetched={handleFormsFetched} />
             <table>
