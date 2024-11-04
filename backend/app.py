@@ -1,7 +1,6 @@
 from fastapi import FastAPI, HTTPException, File, UploadFile, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-# from pydantic import BaseModel
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorGridFSBucket
 from bson.objectid import ObjectId
 from fastapi_login import LoginManager
@@ -17,7 +16,7 @@ origins = ["http://localhost:3000"] # Replace with your frontend URL
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[origins],  # Allows specified origins
+    allow_origins=["*"],  # Allows specified origins
     allow_credentials=True,
     allow_methods=["*"],  # Allows all HTTP methods
     allow_headers=["*"],  # Allows all headers
@@ -56,6 +55,27 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
             "role": user["role"], 
             "token_type": "bearer", 
             "name_th": user["name_th"]}
+
+# Register Endpoint
+@app.post("/register")
+async def register(user: Users):
+    existing_user = await users_collection.find_one({"username": user.username})
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Username already exists")
+    
+    new_user = {
+        "username": user.username,
+        "password": user.password,  # If using plain text
+        "role": user.role,
+        "name_en": user.name_en,
+        "name_th": user.name_th,
+        "email": user.email,
+        "faculty": user.faculty,
+        "major": user.major,
+        "room": user.room
+    }
+    await users_collection.insert_one(new_user)
+    return {"message": "User registered successfully"}
 
 #Create form
 @app.post("/forms")

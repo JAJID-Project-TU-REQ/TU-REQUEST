@@ -1,44 +1,59 @@
-import React from 'react';
-import { Sidebar, Menu, MenuItem, Submenu, Logo } from "react-mui-sidebar";
-import { Container } from '@mui/material';
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import Button from '@mui/material/Button';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
 
-function Siderbar() {
+export default function Sidebar101() {
+  const [open, setOpen] = React.useState(false);
+
+  const toggleDrawer = (newOpen) => () => {
+    setOpen(newOpen);
+  };
+
+  const DrawerList = (
+    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+      <List>
+        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        {['All mail', 'Trash', 'Spam'].map((text, index) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
+
   return (
-    <Container>
-      <Sidebar width={"270px"}>
-      <Logo img="https://adminmart.com/wp-content/uploads/2024/03/logo-admin-mart-news.png">
-        AdminMart
-      </Logo>
-      <Menu subHeading="HOME">
-        <MenuItem link="/" badge="true">
-          Modern
-        </MenuItem>
-        <MenuItem>eCommerce</MenuItem>
-        <MenuItem>Analytical</MenuItem>
-      </Menu>
-      <Menu subHeading="APPS">
-        <MenuItem>Chat</MenuItem>
-        <MenuItem>Calendar</MenuItem>
-      </Menu>
-      <Menu subHeading="OTHERS">
-        <Submenu title="Menu Level">
-          <MenuItem>Post</MenuItem>
-          <MenuItem>Details</MenuItem>
-          <Submenu title="Level 2">
-            <MenuItem>new</MenuItem>
-            <MenuItem>Hello</MenuItem>
-          </Submenu>
-        </Submenu>
-
-        <MenuItem>Chip</MenuItem>
-        <MenuItem target="_blank" link="google.com">
-          External Link
-        </MenuItem>
-      </Menu>
-    </Sidebar>
-      {/* Other components */}
-    </Container>
+    <div>
+      <Button onClick={toggleDrawer(true)}>Open drawer</Button>
+      <Drawer open={open} onClose={toggleDrawer(false)}>
+        {DrawerList}
+      </Drawer>
+    </div>
   );
 }
-
-export default Siderbar;

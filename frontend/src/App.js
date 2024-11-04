@@ -1,13 +1,18 @@
 import React from 'react'
-import Siderbar from './components/sidebar'
-import TemporaryDrawer from './components/jeang'
+import Sidebar from './components/jeang.js'
+import ResponsiveAppBar from './components/navbar.js'
+import Navbar from './components/navbar.js'
+import Sidebar101 from './components/jeang.js'
+import { Grid } from '@mui/material'
 
 const App = () => {
   return (
-    <div>
-      <TemporaryDrawer />
-
-    </div>
+   <div>
+    <Navbar/>
+    <Grid>
+      
+    </Grid>
+   </div>
   )
 }
 
