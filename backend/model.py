@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Literal
 
 class DefaultForm(BaseModel):
     form_type : str
@@ -20,6 +21,7 @@ class PDFModel(BaseModel):
 class Users(BaseModel):
     username : str
     password : str
+    role: Literal['student', 'professor', 'admin']
     name_en : str
     name_th : str
     email : str
