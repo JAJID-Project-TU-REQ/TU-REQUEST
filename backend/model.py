@@ -20,5 +20,9 @@ class PDFModel(BaseModel):
 class Users(BaseModel):
     username : str
     password : str
-    firstName : str
-    lastName : str
+    name_en : str
+    name_th : str
+    email : str
+    faculty : str
+    major : str
+    room : str
