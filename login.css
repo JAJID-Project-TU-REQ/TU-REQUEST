@@ -1,0 +1,244 @@
+@import url('/Users/meaom/Downloads/TUFont.ttf');
+*{
+    font-family: "THAMMASAT", sans-serif;
+}
+ 
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+ 
+.header{
+    max-width: fit-content;
+    margin: 0 auto;
+}
+ 
+nav{
+    padding: 0%;
+    width: 100%;
+    height: 80px;
+    background-color: #ffffff;
+    border-bottom: 0.5px solid #000000 ;
+    box-shadow: 10px;
+}
+ 
+.nav-con{
+    display: flex;
+    justify-content:flex-start;
+    width: 100%;
+    margin: auto;
+}
+ 
+.logo1 img{
+    width: 270px;
+    height: 90px;
+    margin-left: 15px;
+}
+
+
+.login-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 85vh;
+    background: url(img1.jpg) no-repeat;
+    background-size: cover;
+    background-position: center;
+    border-bottom: 40px solid #ffffff ;
+}
+
+.wrapper{
+    width: 420px;
+    background: #ffffffae;
+    color: #000000;
+    border-radius: 12px;
+    padding: 30px 40px;
+    width: 700px;
+    height: 480px;
+}
+
+.wrapper h1{
+    font-size: 24px;
+    text-align: center;
+}
+
+.wrapper h2{
+    font-size: 18px;
+    text-align: center;
+}
+
+.wrapper .input-box{
+    position: relative;
+    width: 100%;
+    margin: 30px 0;
+}
+
+.input-box input{
+    width: 100%;
+    height: 50px;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(0, 0, 0, 0.235);
+    border-radius: 40px;
+    font-size: 18px;
+    color: #000000;
+    padding: 20px 45px 20px 20px;
+}
+
+.input-box input::placeholder{
+    color: #000000;
+}
+
+.input-box i{
+    position: absolute;
+    right: 20px;
+    top: 30%;
+    transform: translate(-50%);
+    font-size: 22px;
+}
+
+.wrapper .btn{
+    width: 100%;
+    height: 45px;
+    background: linear-gradient(#902923,#2A0C0A);
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    font-size: 22px;
+    color: #ffffff;
+}
+
+.wrapper .cond {
+    text-align: center;
+    margin: 20px 0 15px;
+}
+
+.cond h3 {
+    font-size: 20px;
+}
+
+.cond p {
+    font-size: 18px;
+    margin-top: 15px;
+}
+
+.how-to-cont {
+    background: url(img2.jpg) no-repeat;
+    background-size: cover;
+    background-position: center;
+    min-height: 90vh;
+    
+}
+
+.how-to-cont .how-to-box {
+    display: flex;
+    justify-content: space-around;
+    color: #000000;
+    text-align: center;
+}
+
+.how-to-box .box-1 {
+    background-color: #ffffff9c;
+    border-radius: 30px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.box-1 h2 {
+    background: linear-gradient(#902923,#2A0C0A);
+    height: 40px;
+    width: 350px;
+    text-align: center;
+    margin: auto;
+    border-radius: 25px;
+    color: #ffffff;
+    margin-top: 5px;
+    padding: 5px;
+    font-size: 24px;
+}
+
+.box-1 h3 {
+    margin-top: 10px;
+    font-size: 20px;
+}
+
+.box-1 p {
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.how-to-box .box-2 {
+    background-color: #ffffff9c;
+    border-radius: 30px;
+    padding: 20px;
+    margin-top: 20px;
+    height: 255px;
+}
+
+.box-2 h2 {
+    background: linear-gradient(#902923,#2A0C0A);
+    height: 40px;
+    width: 350px;
+    text-align: center;
+    margin: auto;
+    border-radius: 25px;
+    color: #ffffff;
+    margin-top: 5px;
+    padding: 5px;
+    font-size: 24px;
+}
+
+.box-2 h3 {
+    margin-top: 10px;
+    font-size: 20px;
+}
+
+.box-2 p {
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.how-to-box .box-3 {
+    background-color: #ffffff9c;
+    border-radius: 30px;
+    padding: 20px;
+    margin-top: 20px;
+    height: 150px;
+}
+
+.box-3 h2 {
+    background: linear-gradient(#902923,#2A0C0A);
+    height: 40px;
+    width: 350px;
+    text-align: center;
+    margin: auto;
+    border-radius: 25px;
+    color: #ffffff;
+    margin-top: 5px;
+    padding: 5px;
+    font-size: 24px;
+}
+
+.box-3 h3 {
+    margin-top: 10px;
+    font-size: 20px;
+}
+
+.box-3 p {
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.bar-close {
+    background: linear-gradient(#902923,#2A0C0A);
+    color: #ffffff;
+    width: 100%;
+    height: 35px;
+    text-align: center;
+    margin: auto;
+    font-size: 22px;
+}
