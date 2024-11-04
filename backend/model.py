@@ -16,3 +16,9 @@ class PDFModel(BaseModel):
     filename : str
     content_type : str
     size : int
+
+class Users(BaseModel):
+    username : str
+    password : str
+    firstName : str
+    lastName : str
