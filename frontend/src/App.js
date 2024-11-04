@@ -2,6 +2,7 @@ import React from "react";
 
 function App() {
   return (
+<<<<<<< HEAD
     <>
       <div>
         <nav>
@@ -37,6 +38,11 @@ function App() {
         </div>
       </div>
     </>
+=======
+   <div>
+    
+   </div>
+>>>>>>> fe1d3b2b11288150cc19a97f9351ca6ba57195de
   );
 }
 
