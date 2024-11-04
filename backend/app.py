@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, File, UploadFile
+from fastapi import FastAPI, HTTPException, File, UploadFile, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 # from pydantic import BaseModel
@@ -17,23 +17,45 @@ origins = ["http://localhost:3000"] # Replace with your frontend URL
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows specified origins
+    allow_origins=[origins],  # Allows specified origins
     allow_credentials=True,
     allow_methods=["*"],  # Allows all HTTP methods
     allow_headers=["*"],  # Allows all headers
 )
 
 client = AsyncIOMotorClient("mongodb+srv://keerati:1234@cluster0.me7rp.mongodb.net/")
-db = client.TUREQ
-form_collection = db.defaultform
-users_collection = db.users
-
+db = client.TUREQ # Database สำหรับ TUREQ
+form_collection = db.defaultform # Collection สำหรับ defaultform
+users_collection = db.users # Collection สำหรับ users
 fs_bucket = AsyncIOMotorGridFSBucket(db)
+
+# Secret key and Login Manager
+SECRET = "super-secret-key"
+manager = LoginManager(SECRET, token_url="/auth/token")
 
 # test route
 @app.get("/")
 async def root():
     return {"message":"hello"}
+
+# Login Endpoint
+@manager.user_loader
+async def load_user(username: str):
+    user = await users_collection.find_one({"username": username})  # Use the reference here
+    return user
+
+@app.post("/auth/token")
+async def login(form_data: OAuth2PasswordRequestForm = Depends()):
+    user = await users_collection.find_one({"username": form_data.username})
+    if not user or user["password"] != form_data.password:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+
+    # Include role in the response token
+    access_token = manager.create_access_token(data={"sub": form_data.username, "role": user["role"]})
+    return {"access_token": access_token, 
+            "role": user["role"], 
+            "token_type": "bearer", 
+            "name_th": user["name_th"]}
 
 #Create form
 @app.post("/forms")
