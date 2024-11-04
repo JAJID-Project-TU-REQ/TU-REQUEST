@@ -8,14 +8,7 @@ from bson.objectid import ObjectId
 #App object
 app = FastAPI()
 
-from model import DefaultForm
-# from database import (
-#     # create_form,
-#     # fetch_one_form,
-#     # fetch_all_form,
-#     # remove_form,
-#     # update_form
-# )
+from model import DefaultForm, Users
 
 origins = ["http://localhost:3000"] # Replace with your frontend URL
 
@@ -29,7 +22,9 @@ app.add_middleware(
 
 client = AsyncIOMotorClient("mongodb+srv://keerati:1234@cluster0.me7rp.mongodb.net/")
 db = client.TUREQ
-collection = db.defaultform
+form_collection = db.defaultform
+users_collection = db.users
+
 fs_bucket = AsyncIOMotorGridFSBucket(db)
 
 # test route
@@ -40,7 +35,7 @@ async def root():
 #Create form
 @app.post("/forms")
 async def post_form(form : DefaultForm):
-    result = await collection.insert_one(form.dict())
+    result = await form_collection.insert_one(form.dict())
     if result:
         return {
             "id": str(result.inserted_id),
@@ -60,7 +55,7 @@ async def post_form(form : DefaultForm):
 #Read-one form
 @app.get("/forms/{form_id}")
 async def read_form(form_id):
-    form = await collection.find_one({"_id": ObjectId(form_id)})
+    form = await form_collection.find_one({"_id": ObjectId(form_id)})
     if form:
         return {
             "id": str(form["_id"]),
@@ -80,7 +75,7 @@ async def read_form(form_id):
 @app.get("/forms/professor/{professor_name}")
 async def get_forms_by_professor(professor_name: str):
     forms = []
-    cursor = collection.find({"professor": professor_name})
+    cursor = form_collection.find({"professor": professor_name})
     async for document in cursor:
         forms.append(DefaultForm(**document))
     if forms:
@@ -92,7 +87,7 @@ async def get_forms_by_professor(professor_name: str):
 @app.get("/forms")
 async def read_all_form():
     forms = []
-    cursor = collection.find()
+    cursor = form_collection.find()
     async for document in cursor:
         forms.append(DefaultForm(**document))
     return forms
@@ -100,7 +95,7 @@ async def read_all_form():
 #Update form
 @app.put("/forms/{form_id}")
 async def put_form(form_id: str, form : DefaultForm):
-    result = await collection.update_one(
+    result = await form_collection.update_one(
     {"_id": ObjectId(form_id)}, {"$set": form.dict(exclude_unset=True) }
     )
     if result.modified_count == 1:
@@ -122,7 +117,7 @@ async def put_form(form_id: str, form : DefaultForm):
 #Delete form
 @app.delete("/forms/{form_id}")
 async def delete_form(form_id):
-    response = await collection.delete_one({"_id": ObjectId(form_id)})
+    response = await form_collection.delete_one({"_id": ObjectId(form_id)})
     if response:
         return "Successfully deleted form"
     raise HTTPException(404, "error")
