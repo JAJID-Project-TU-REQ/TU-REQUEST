@@ -7,8 +7,8 @@ import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { mainNavbarItems } from './consts/navbarItems';
-import { navbarStyles } from './styles';
+import { sidebarItem } from './consts/sidebarItem';
+import { styles } from './styles';
 import { useNavigate } from "react-router-dom";
 
 const Sidebar = ({ open, toggleDrawer }) => {
@@ -20,7 +20,7 @@ const Sidebar = ({ open, toggleDrawer }) => {
  <Toolbar />
         <Divider />
         <List>
-          {mainNavbarItems.map((item, index) => (
+          {sidebarItem.map((item, index) => (
             <ListItem
                 button
                 key={item.id}

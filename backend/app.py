@@ -54,7 +54,10 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     return {"access_token": access_token, 
             "role": user["role"], 
             "token_type": "bearer", 
-            "name_th": user["name_th"]}
+            "name_th": user["name_th"],
+            "name_en": user["name_en"],
+            "username": user["username"]
+            }
 
 # Register Endpoint
 @app.post("/register")

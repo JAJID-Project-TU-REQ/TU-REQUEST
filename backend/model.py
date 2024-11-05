@@ -10,7 +10,7 @@ class DefaultForm(BaseModel):
     professor : str
     subject : str
     section : str
-    senderId : int
+    senderId : str
     status : str
 
 class PDFModel(BaseModel):
