@@ -10,27 +10,20 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Avatar from '@mui/material/Avatar';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { Link } from "react-router-dom";
 
-
 function ProfessorDashboard() {
+  const [forms, setForms] = useState([]);
+  const handleFormsFetched = (fetchedForms) => {
+    setForms(fetchedForms); // Update state with the fetched forms
+  };
+  
   return (
     <Container sx={{ p:2 }} maxWidth="lg">    
       <Paper sx={{ p:2 }}>
         <Box display="flex">
           <Box flexGrow={1}>
-            <Typography component="h2" variant="h6" color="primary" gutterBottom>
-              USERS
-            </Typography>
-          </Box>
-          <Box>
-            <Link to="/create">
-              <Button variant="contained" color="primary">
-                CREATE
-              </Button>
-            </Link>
           </Box>
         </Box>
         <TableContainer component={Paper}>
@@ -50,7 +43,7 @@ function ProfessorDashboard() {
                 <TableCell align="center">title</TableCell>
                 <TableCell align="center">
                   <ButtonGroup color="primary" aria-label="outlined primary button group">
-                    <Button >Edit</Button>
+                    <Button >รายละเอียด</Button>
                   </ButtonGroup>
                 </TableCell>
               </TableRow>
