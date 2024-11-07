@@ -12,6 +12,7 @@ import ProfessorDashboard from "./pages/ProfessorDashboard";
 import ProtectedLayout from "./ProtectedLayout";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
+import Detail from "./pages/Detail";
 
 
 const router = createBrowserRouter([
@@ -38,7 +39,12 @@ const router = createBrowserRouter([
           {
             path: "/main/normal-request",
             element: <Normal_Request />
-          }
+          },
+        {
+          path: "/main/detail",
+          element: <Detail />
+        }
+
       ]
     },
     ],
