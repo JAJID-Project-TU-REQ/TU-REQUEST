@@ -8,6 +8,7 @@ import App from "./App";
 import Login from "./pages/Login";
 import Normal_Request from "./pages/Normal_Request";
 import BasicTabs from "./components/status";
+import ProfessorDashboard from "./pages/ProfessorDashboard";
 import ProtectedLayout from "./ProtectedLayout";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
@@ -27,8 +28,12 @@ const router = createBrowserRouter([
         element: <App />,
         children: [
           {
-             path: "/main/status",
+             path: "/main/student-dashboard",
             element: <BasicTabs />,
+          },
+          {
+            path: "/main/professor-dashboard",
+            element: <ProfessorDashboard />
           },
           {
             path: "/main/normal-request",

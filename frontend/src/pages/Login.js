@@ -34,7 +34,11 @@ const Login = () => {
       console.log(data.username)
       console.log(data.name_th)
       console.log(data)
-      navigate(`/main/status`); // Redirect based on role
+      if (data.role === 'student') {
+        navigate(`/main/student-dashboard`); // Redirect based on role
+      } else {
+        navigate(`/main/professor-dashboard`); // Redirect based on role
+      }
     } else {
       setError('Invalid username or password');
     }
