@@ -81,7 +81,7 @@ async def register(user: Users):
     return {"message": "User registered successfully"}
  
  #Create method for all-form
-@app.post("/submit_form/")
+@app.post("/forms")
 async def submit_form(form_data: BaseFormModel):
     # Convert form_data to dictionary
     form_data_dict = form_data.dict()
@@ -93,26 +93,6 @@ async def submit_form(form_data: BaseFormModel):
     result = await db["forms"].insert_one(form_data_dict)
     
     return {"inserted_id": str(result.inserted_id)}
-
-#Create form
-@app.post("/forms")
-async def post_form(form : DefaultForm):
-    result = await form_collection.insert_one(form.dict())
-    if result:
-        return {
-            "id": str(result.inserted_id),
-            "form_type" : form.form_type,
-            "semester_year" : form.semester_year,
-            "semester" : form.semester,
-            "title" : form.title,
-            "content" : form.content,
-            "professor" : form.professor,
-            "subject" : form.subject,
-            "section" : form.section,
-            "senderId" : form.senderId,
-            "status" : form.status,    
-    }
-    raise HTTPException(400,"Something went wrong")
 
 #Read-one form
 @app.get("/forms/{form_id}")

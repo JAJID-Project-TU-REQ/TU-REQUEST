@@ -19,7 +19,7 @@ function Normal_Request() {
   const [subject, setSubject] = useState('');
   const [section, setSection] = useState('');
 
-  const form_location = 'http://localhost:8000/submit_form'
+  const form_location = 'http://localhost:8000/forms'
 
   useEffect(() => {
     const username = localStorage.getItem('username');
@@ -132,6 +132,7 @@ function Normal_Request() {
               <MenuItem value="สมชาย">สมชาย</MenuItem>
               <MenuItem value="สมหมาย">สมหมาย</MenuItem>
               <MenuItem value="สมคิด">สมคิด</MenuItem>
+              <MenuItem value="ปฏิภาณ เพ็งเภา">ปฏิภาณ เพ็งเภา</MenuItem>
             </Select>
           </Box>
         </Grid>
