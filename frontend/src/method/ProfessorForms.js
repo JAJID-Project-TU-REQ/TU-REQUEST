@@ -1,37 +1,35 @@
-import React, { useState, useEffect } from 'react';
+// fetchForms.js
+
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export default function ProfessorForms({ professorName:professor, onFormsFetched }) {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+// Custom hook for fetching forms based on professor
+const useFetchForms = (professorName) => {
+  const [forms, setForms] = useState([]);  // State to store the fetched forms
+  const [loading, setLoading] = useState(true);  // Loading state
+  const [error, setError] = useState(null);  // Error state
 
+  // Fetch data from API when professorName changes
   useEffect(() => {
-    // Function to fetch forms by professor using axios
-    const fetchForms = async () => {
+    const fetchFormsData = async () => {
+      setLoading(true);
+      setError(null);
+
       try {
-        const response = await axios.get(`http://localhost:8000/forms/professor/${professor}`);
-        console.log("API Response:", response.data);  // Log the response here
-        onFormsFetched(response.data); // Send the fetched data back to the parent
-      } catch (error) {
-        setError(error.response ? error.response.data.detail : error.message);
-      } finally {
-        setLoading(false);
+        // Fetch forms data from backend
+        const response = await axios.get(`http://localhost:8000/professor_forms/${professorName}`);
+        setForms(response.data);  // Store fetched forms in state
+      } catch (err) {
+        setError("Failed to fetch forms.");
       }
+
+      setLoading(false);
     };
 
-    fetchForms();
-  }, [professor,onFormsFetched]);
+    fetchFormsData();
+  }, [professorName]);  // Re-run the effect when professorName changes
 
-  // Display a loading message while fetching
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  return { forms, loading, error };  // Return the state variables to use in the display component
+};
 
-  // Display error message if there is an error
-  if (error) {
-    return <p>Error: {error}</p>;
-  }
-
-  // Display the list of forms
-  return null;
-}
+export default useFetchForms;

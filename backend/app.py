@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, File, UploadFile, Depends
+from fastapi import FastAPI, HTTPException, File, UploadFile, Depends, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorGridFSBucket
@@ -6,6 +6,7 @@ from bson.objectid import ObjectId
 from fastapi_login import LoginManager
 from fastapi_login.exceptions import InvalidCredentialsException
 from fastapi.security import OAuth2PasswordRequestForm
+from typing import List
 
 #App object
 app = FastAPI()
@@ -26,6 +27,7 @@ client = AsyncIOMotorClient("mongodb+srv://keerati:1234@cluster0.me7rp.mongodb.n
 db = client.TUREQ # Database สำหรับ TUREQ
 form_collection = db.defaultform # Collection สำหรับ defaultform
 users_collection = db.users # Collection สำหรับ users
+forms_collection = db.forms # Collection สำหรับ forms
 fs_bucket = AsyncIOMotorGridFSBucket(db)
 
 # Secret key and Login Manager
@@ -114,15 +116,32 @@ async def read_form(form_id):
         }
     raise HTTPException(404, "form not found")
 
-@app.get("/forms/professor/{professor_name}")
-async def get_forms_by_professor(professor_name: str):
-    forms = []
-    cursor = form_collection.find({"professor": professor_name})
-    async for document in cursor:
-        forms.append(DefaultForm(**document))
-    if forms:
+#Read-all form by professor
+@app.get("/professor_forms/{professor}", response_model=List[BaseFormModel])
+async def get_forms_by_professor(professor: str):
+    try:
+        # Query MongoDB to get all forms that match the professor's name
+        forms = await db["forms"].find({"professor": professor}).to_list(length=None)
+
+        # If no forms are found, return a 404 error
+        if not forms:
+            raise HTTPException(status_code=404, detail="No forms found for this professor")
+
+        # Return the list of forms
         return forms
-    raise HTTPException(status_code=404, detail=f"No forms found for professor: {professor_name}")
+    except Exception as e:
+        # If something goes wrong with the query, return a 500 error
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+
+# @app.get("/forms/professor/{professor_name}")
+# async def get_forms_by_professor(professor_name: str):
+#     forms = []
+#     cursor = forms_collection.find({"professor": professor_name})
+#     async for document in cursor:
+#         forms.append(DefaultForm(**document))
+#     if forms:
+#         return forms
+#     raise HTTPException(status_code=404, detail=f"No forms found for professor: {professor_name}")
 
 
 #Read-all form
