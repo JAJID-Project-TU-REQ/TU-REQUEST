@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
@@ -12,17 +11,25 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { Link } from "react-router-dom";
-import ProfessorForms from "../method/ProfessorForms";
+import ProfessorForms from "../method/ProfessorForms.js";
 
 function ProfessorDashboard() {
   const [forms, setForms] = useState([]);
+  const [professorName, setProfessorName] = useState("");
+
   const handleFormsFetched = (fetchedForms) => {
     setForms(fetchedForms); // Update state with the fetched forms
   };
+  useEffect(() => {
+    const storedProfessorName = localStorage.getItem("name_th");
+    if (storedProfessorName) {
+      setProfessorName(storedProfessorName);
+    }
+  }, []);
 
   return (
     <div>
-      <ProfessorForms professorName="สมหมาย" onFormsFetched={handleFormsFetched} />
+      <ProfessorForms professorName={professorName} onFormsFetched={handleFormsFetched} />
       <Container sx={{ p:2}} maxWidth="lg">    
       <Paper sx={{ p:2 }}>
         <Box display="flex">

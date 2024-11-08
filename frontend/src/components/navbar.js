@@ -16,7 +16,6 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import PersonIcon from '@mui/icons-material/Person';
 import logo from '../assets/images/logo.png';
 
-
 function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const full_name = localStorage.getItem('name_th');
@@ -39,7 +38,7 @@ function Navbar() {
       <Typography variant="h6" sx={{ backgroundColor: "#902923" }}>Status</Typography>
       <List>
         <ListItem disablePadding>
-          <ListItemButton >
+          <ListItemButton>
             <ListItemText primary="ตรวจสอบสถานะคำร้อง" />
           </ListItemButton>
         </ListItem>
@@ -57,12 +56,83 @@ function Navbar() {
             </ListItem>
             <Collapse in={openMenus[`menu-${index}`]} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                <ListItemButton sx={{ pl: 4 }}>
-                  <ListItemText primary={`Sub Item for ${text} - 1`} />
-                </ListItemButton>
-                <ListItemButton sx={{ pl: 4 }}>
-                  <ListItemText primary={`Sub Item for ${text} - 2`} />
-                </ListItemButton>
+                {text === 'คำร้องประเภทวิชาการ' && (
+                  <div>
+                    <ListItemButton sx={{ pl: 4, height: 35 }}>
+                      <ListItemText primary={<Typography sx={{ fontSize: '0.85rem' }}>ลงทะเบียนเกิน/น้อยกว่าข้อบังคับ</Typography>} />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4, height: 35 }}>
+                      <ListItemText primary={<Typography sx={{ fontSize: '0.85rem' }}>เพิ่ม/ถอนล่าช้า</Typography>} />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4, height: 35 }}>
+                      <ListItemText primary={<Typography sx={{ fontSize: '0.85rem' }}>จดทะเบียนข้ามโครงการ/สถาบัน</Typography>} />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4, height: 35 }}>
+                      <ListItemText primary={<Typography sx={{ fontSize: '0.85rem' }}>ขอเพิ่มโคสต้ารายวิชา</Typography>} />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4, height: 35 }}>
+                      <ListItemText primary={<Typography sx={{ fontSize: '0.85rem' }}>ขอย้ายกลุ่มเรียน</Typography>} />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4, height: 35 }}>
+                      <ListItemText primary={<Typography sx={{ fontSize: '0.85rem' }}>ขอทบทวนผลการศึกษา</Typography>}/>
+                    </ListItemButton>
+                  </div>
+                )}
+                {text === 'คำร้องประเภทค่าใช้จ่าย' && (
+                  <div>
+                    <ListItemButton sx={{ pl: 4, height: 35 }}>
+                      <ListItemText primary={<Typography sx={{ fontSize: '0.85rem' }}>คำร้องขอคืนค่าใช้จ่ายอุแกรณ์</Typography>} />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4, height: 35 }}>
+                      <ListItemText primary={<Typography sx={{ fontSize: '0.85rem' }}>คำร้องขอปรับโครงสร้างหนี้/ผ่อนผันค่าลงทะเบียน</Typography>} />
+                    </ListItemButton>
+                  </div>
+                )}
+                {text === 'คำร้องสถานะนักศึกษา' && (
+                  <div>
+                    <ListItemButton sx={{ pl: 4, height: 35 }}>
+                      <ListItemText primary={<Typography sx={{ fontSize: '0.85rem' }}>คำร้องขอพักการศึกษา</Typography>} />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4, height: 35 }}>
+                      <ListItemText primary={<Typography sx={{ fontSize: '0.85rem' }}>คำร้องขอคืนสถานะนักศึกษา</Typography>}/>
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4, height: 35 }}>
+                      <ListItemText primary={<Typography sx={{ fontSize: '0.85rem' }}>คำร้องขอลาออก</Typography>} />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4, height: 35 }}>
+                      <ListItemText primary={<Typography sx={{ fontSize: '0.85rem' }}>ขอเอกสารฝึกงาน</Typography>} />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4, height: 35 }}>
+                      <ListItemText primary={<Typography sx={{ fontSize: '0.85rem' }}>ขอยกเลิกการยื่นแจ้งจบ</Typography>} />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4, height: 35 }}>
+                      <ListItemText primary={<Typography sx={{ fontSize: '0.85rem' }}>ขอทบทวนผลการศึกษา</Typography>} />
+                    </ListItemButton>
+                  </div>
+                )}
+                {text === 'คำร้องอื่นๆ' && (
+                  <div>
+                    <ListItemButton sx={{ pl: 4, height: 35 }}>
+                      <ListItemText primary={<Typography sx={{ fontSize: '0.85rem' }}>คำร้องทั่วไป</Typography>} />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4, height: 35 }}>
+                      <ListItemText primary={<Typography sx={{ fontSize: '0.85rem' }}>คำร้องกรณีขาดสอบ</Typography>} />
+                    </ListItemButton>
+                  </div>
+                )}
+                {text === 'คำร้องเทียบโอนรายวิชา' && (
+                  <div>
+                    <ListItemButton sx={{ pl: 4, height: 35 }}>
+                      <ListItemText primary={<Typography sx={{ fontSize: '0.85rem' }}>คำร้องเทียบโอนรายวิชา EL</Typography>} />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4, height: 35 }}>
+                      <ListItemText primary={<Typography sx={{ fontSize: '0.85rem' }}>คำร้องเทียบโอนรายวิชา TU</Typography>} />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4, height: 35 }}>
+                      <ListItemText primary={<Typography sx={{ fontSize: '0.85rem' }}>คำร้องเทียบโอนรายวิชา E-LEARNING</Typography>} />
+                    </ListItemButton>
+                  </div>
+                )}
               </List>
             </Collapse>
           </React.Fragment>
@@ -73,7 +143,7 @@ function Navbar() {
 
   return (
     <Box>
-      <AppBar sx={{ backgroundColor: '#FFFFFF' ,boxShadow:'none',borderBottom: '0.5px solid #000'}}>
+      <AppBar sx={{ backgroundColor: '#FFFFFF', boxShadow: 'none', borderBottom: '0.5px solid #000' }}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -88,10 +158,9 @@ function Navbar() {
             <img src={logo} alt="Thamasart" style={{ height: '40px' }} />
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center', color: '#000' }}>
-          <Typography variant="body1" sx={{ color: '#000',mr:2 }}>{full_name}</Typography>
-          <PersonIcon/>
+            <Typography variant="body1" sx={{ color: '#000', mr: 2 }}>{full_name}</Typography>
+            <PersonIcon />
           </Box>
-
         </Toolbar>
       </AppBar>
       <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>

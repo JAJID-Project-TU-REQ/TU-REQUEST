@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function ProfessorForms({ professorName, onFormsFetched }) {
+export default function ProfessorForms({ professorName:professor, onFormsFetched }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -9,7 +9,7 @@ function ProfessorForms({ professorName, onFormsFetched }) {
     // Function to fetch forms by professor using axios
     const fetchForms = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/forms/professor/${professorName}`);
+        const response = await axios.get(`http://localhost:8000/forms/professor/${professor}`);
         console.log("API Response:", response.data);  // Log the response here
         onFormsFetched(response.data); // Send the fetched data back to the parent
       } catch (error) {
@@ -20,7 +20,7 @@ function ProfessorForms({ professorName, onFormsFetched }) {
     };
 
     fetchForms();
-  }, [professorName]);
+  }, [professor,onFormsFetched]);
 
   // Display a loading message while fetching
   if (loading) {
@@ -35,5 +35,3 @@ function ProfessorForms({ professorName, onFormsFetched }) {
   // Display the list of forms
   return null;
 }
-
-export default ProfessorForms;
