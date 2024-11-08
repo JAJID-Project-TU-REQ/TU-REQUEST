@@ -4,18 +4,22 @@ import axios from 'axios';
 
 function Normal_Request() {
 
-  const [form_type] = useState('Default')
-  const [semester_year, setSemesterYear] = useState('')
-  const [semester, setSemester] = useState('')
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
-  const [professor, setProf] = useState('')
-  const [subject, setSubject] = useState('')
-  const [section, setSection] = useState('')
-  const [senderId, setSenderID] = useState('')
-  const [status] = useState('pending')
+  // Common fields
+  const [form_type] = useState('ทั่วไป');
+  const [semester_year, setSemesterYear] = useState('');
+  const [semester, setSemester] = useState('');
+  const [professor, setProf] = useState('');
+  const [senderId, setSenderID] = useState('');
+  const [status] = useState('pending');
+  const [date] = useState(new Date().toISOString()); // Add timestamp
 
-  const form_location = 'http://localhost:8000/forms'
+  // Additional fields
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [subject, setSubject] = useState('');
+  const [section, setSection] = useState('');
+
+  const form_location = 'http://localhost:8000/submit_form'
 
   useEffect(() => {
     const username = localStorage.getItem('username');
@@ -24,21 +28,26 @@ function Normal_Request() {
     }
   }, []);
 
-  const FormHandler = () => {
-    axios.post(form_location, {
-        form_type: form_type,
-        semester_year: semester_year,
-        semester: semester,
-        title: title,
-        content: content,
-        professor: professor,
-        subject: subject,
-        section: section,
-        senderId: senderId,
-        status: status
-    }).then(res => console.log(res))
-      .catch(err => console.error("Error posting form data:", err));
+  const FormHandler = (e) => {
+    const additional_fields = {
+      title : title,
+      content : content,
+      subject : subject,
+      section : section
     };
+  
+    axios.post(form_location, {
+      form_type: form_type,   // Common field
+      semester_year: semester_year, // Common field
+      semester: semester,   // Common field
+      professor: professor, // Common field
+      senderId: senderId,   // Common field
+      status: status,       // Common field
+      date: date,  // Add date in ISO format
+      additional_fields: additional_fields //Additional fields
+    }).then(res => (console.log(res)))
+    .catch(err => (console.error("Error posting form data",err)));  
+  };
 
     const handleSubmit = (e) => {
       FormHandler();
