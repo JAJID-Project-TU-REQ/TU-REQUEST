@@ -10,7 +10,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 #App object
 app = FastAPI()
 
-from model import DefaultForm, Users
+from model import DefaultForm, Users, BaseFormModel, normalForm
 
 origins = ["http://localhost:3000"] # Replace with your frontend URL
 
@@ -79,6 +79,20 @@ async def register(user: Users):
     }
     await users_collection.insert_one(new_user)
     return {"message": "User registered successfully"}
+ 
+ #Create method for all-form
+@app.post("/submit_form/")
+async def submit_form(form_data: BaseFormModel):
+    # Convert form_data to dictionary
+    form_data_dict = form_data.dict()
+    
+    # Convert datetime to ISO string for MongoDB
+    form_data_dict["date"] = form_data_dict["date"].isoformat()
+
+    # Insert the form data into MongoDB
+    result = await db["forms"].insert_one(form_data_dict)
+    
+    return {"inserted_id": str(result.inserted_id)}
 
 #Create form
 @app.post("/forms")
