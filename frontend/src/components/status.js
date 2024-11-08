@@ -50,7 +50,7 @@ export default function BasicTabs() {
           สถานะคำร้อง
         </Typography>
         <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-          Request Status
+           REQUEST STATUS
         </Typography>
       </Box>
       <Box sx={{ width: "100%", height: "70%" }}>
