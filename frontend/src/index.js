@@ -30,21 +30,20 @@ const router = createBrowserRouter([
         children: [
           {
              path: "/main/student-dashboard",
-            element: <BasicTabs />,
+            element: <BasicTabs />
           },
           {
             path: "/main/professor-dashboard",
             element: <ProfessorDashboard />
           },
           {
+            path: "/main/professor-dashboard/form-detail/:form_id",
+            element: <Detail />
+          },
+          {
             path: "/main/normal-request",
             element: <Normal_Request />
           },
-        {
-          path: "/main/detail",
-          element: <Detail />
-        }
-
       ]
     },
     ],

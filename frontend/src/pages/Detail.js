@@ -1,13 +1,25 @@
 import React from "react";
 import { Container, Paper, Typography, Grid, Button, Box } from "@mui/material";
-
+import { useParams } from "react-router-dom";
+import FormDetails from "../method/formDetails";
 const getRole = () => {
-  // This should be replaced with actual logic to get the user role
-  return 'professor'; // Example role
+  return 'professor';
 };
 
-const Detail = () => {
+
+
+export default function Detail () {
   const Role = getRole();
+
+  const { form_id } = useParams(); // Extract the formId from the URL
+  const { form, loading, error } = FormDetails(form_id); 
+
+  console.log("Form ID from URL:", form_id); // Check if formId is being retrieved
+  console.log("Form Details:", form); // Check if form is being retrieved
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
+
   return (
     <>
       <Container>
@@ -45,9 +57,14 @@ const Detail = () => {
               alignItems: "center",
             }}
           >
-            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-              หัวข้อคำร้อง
-            </Typography>
+            <Box display={"flex"}>
+              <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+              หัวข้อคำร้อง:
+              </Typography>
+              <Typography variant="h6" sx={{ ml:1, fontWeight: "bold" }}>
+                {form.additional_fields.title}
+              </Typography>
+            </Box>
             <Box
               sx={{
                 backgroundColor: "#FFC107",
@@ -73,64 +90,64 @@ const Detail = () => {
         <Paper elevation={0} sx={{ p: 4 }}>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
             <Grid container spacing={3}>
-              <Grid item xs={12} sm={6}>
-                <Typography variant="subtitle2" fontWeight="bold" gutterBottom>
+              <Grid display={"flex"} item xs={12} sm={6}>
+                <Typography variant="subtitle2" fontWeight="bold" gutterBottom sx={{ fontSize: "1.1rem" }}>
                   เขียนวันที่ :
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  11/10/2220
+                <Typography variant="body2" color="text.secondary" sx={{ fontSize: "1.1rem" }}>
+                  {form.date}
                 </Typography>
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <Typography variant="subtitle2" fontWeight="bold" gutterBottom>
+              <Grid display={"flex"} item xs={12} sm={6}>
+                <Typography variant="subtitle2" fontWeight="bold" gutterBottom sx={{ fontSize: "1.1rem" }}>
                   อาจารย์ที่ปรึกษา :
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  อาจารย์ มานี เเฟสใต้
+                <Typography variant="body2" color="text.secondary" sx={{ fontSize: "1.1rem" }}>
+                  {form.professor}
                 </Typography>
               </Grid>
             </Grid>
 
-            <Box>
-              <Typography variant="subtitle2" fontWeight="bold" gutterBottom>
+            <Box display={"flex"}>
+              <Typography variant="subtitle2" fontWeight="bold" gutterBottom sx={{ fontSize: "1.1rem" }}>
                 ประเภทคำร้อง :
               </Typography>
-              <Typography variant="body2" color="text.secondary">
-                ทั่วไป
+              <Typography variant="body2" color="text.secondary" sx={{ml:1, fontSize: "1.1rem" }}>
+                {form.form_type}
               </Typography>
             </Box>
 
-            <Box>
-              <Typography variant="subtitle2" fontWeight="bold" gutterBottom>
-                คำอธิบายประกอบ :
-              </Typography>
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{ whiteSpace: "pre-line" }}
-              >
-                กระผมจะขอทำเกรดรายวิชาเป็นอักษร I
-                เนื่องจากผมไม่ได้เข้าสอบปลายภาค เพราะติดโควิด-19
-                ตามที่ผมได้แนบใบรับรองแพทย์มาด้วยครับ ตอนนี้ผม
-                หายป่วยแล้วครับและพร้อม ตามงานครับ
-                ผมขอความกรุณาจากอาจารย์ผู้สอนด้วยครับ ขอบพระคุณครับ
-              </Typography>
+            <Box display={"flex"}>
+              <Box sx={{width:"15%",mr:0}}>
+                <Typography variant="subtitle2" fontWeight="bold" gutterBottom sx={{ fontSize: "1.1rem" }}>
+                  คำอธิบายประกอบ :
+                </Typography>
+              </Box>
+              <Box sx={{ml:0,width:"88%"}}>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ whiteSpace: "pre-line" ,fontSize: '1.1rem'}}
+                >
+                  {form.additional_fields.content}
+                </Typography>
+              </Box>
             </Box>
 
-            <Box>
-              <Typography variant="subtitle2" fontWeight="bold" gutterBottom>
+            <Box display={"flex"} >
+              <Typography variant="subtitle2" fontWeight="bold" gutterBottom sx={{ fontSize: "1.1rem" }}>
                 ไฟล์แนบประกอบ :
               </Typography>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <Typography variant="body2" color="text.secondary">
+              <Box sx={{ml:3, display: "flex", alignItems: "start", gap: 1 }}>
+                <Typography variant="body2" color="text.secondary" sx={{fontSize: '1.2rem'}}>
                   file.pdf
                 </Typography>
                 <Button
                   variant="text"
                   size="small"
-                  sx={{ color: "primary.main", textTransform: "none" }}
+                  sx={{ color: "primary.main", textTransform: "none",fontSize: '1.1rem',alignContent:"center" }}
                 >
-                  (VIEW PDF)
+                    (VIEW PDF)
                 </Button>
               </Box>
             </Box>
@@ -181,5 +198,3 @@ const Detail = () => {
     </>
   );
 };
-
-export default Detail;

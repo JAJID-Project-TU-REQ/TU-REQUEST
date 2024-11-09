@@ -11,7 +11,6 @@ function Normal_Request() {
   const [professor, setProf] = useState('');
   const [senderId, setSenderID] = useState('');
   const [status] = useState('pending');
-  const [date] = useState(new Date().toISOString()); // Add timestamp
 
   // Additional fields
   const [title, setTitle] = useState('');
@@ -43,7 +42,6 @@ function Normal_Request() {
       professor: professor, // Common field
       senderId: senderId,   // Common field
       status: status,       // Common field
-      date: date,  // Add date in ISO format
       additional_fields: additional_fields //Additional fields
     }).then(res => (console.log(res)))
     .catch(err => (console.error("Error posting form data",err)));  
