@@ -121,7 +121,7 @@ async def read_form(form_id):
 async def get_forms_by_professor(professor: str):
     try:
         # Query MongoDB to get all forms that match the professor's name
-        forms = await db["forms"].find({"professor": professor}).to_list(length=None)
+        forms = await forms_collection.find({"professor": professor}).to_list(length=100)
 
         # If no forms are found, return a 404 error
         if not forms:

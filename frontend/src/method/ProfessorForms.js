@@ -1,35 +1,38 @@
-// fetchForms.js
+// src/method/useFetchForms.js
 
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-// Custom hook for fetching forms based on professor
-const useFetchForms = (professorName) => {
-  const [forms, setForms] = useState([]);  // State to store the fetched forms
-  const [loading, setLoading] = useState(true);  // Loading state
-  const [error, setError] = useState(null);  // Error state
+function useFetchForms(professorUsername) {
+  const [forms, setForms] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Fetch data from API when professorName changes
   useEffect(() => {
-    const fetchFormsData = async () => {
-      setLoading(true);
-      setError(null);
+    if (!professorUsername) return; // Only fetch if professorName exists
 
+    const fetchData = async () => {
       try {
-        // Fetch forms data from backend
-        const response = await axios.get(`http://localhost:8000/professor_forms/${professorName}`);
-        setForms(response.data);  // Store fetched forms in state
-      } catch (err) {
-        setError("Failed to fetch forms.");
-      }
+        const response = await axios.get(`http://localhost:8000/professor_forms/${professorUsername}`);
+        
+        if (response.data && response.data.length === 0) {
+          setForms([]);  // Set an empty array if no forms are found
+        } else {
+          setForms(response.data);  // Otherwise, set the fetched forms
+        }
 
-      setLoading(false);
+        setError(null); // Clear any previous error
+      } catch (err) {
+        return null;
+      } finally {
+        setLoading(false); // Always stop loading
+      }
     };
 
-    fetchFormsData();
-  }, [professorName]);  // Re-run the effect when professorName changes
+    fetchData();
+  }, [professorUsername]);
 
-  return { forms, loading, error };  // Return the state variables to use in the display component
-};
+  return { forms, loading, error };
+}
 
 export default useFetchForms;

@@ -129,10 +129,10 @@ function Normal_Request() {
               อาจารย์ผู้สอน
             </Typography>
             <Select id="professor" name="professor" variant="outlined" onChange={event => setProf(event.target.value)} sx={{ width: '300px', height: '50px' }}>
-              <MenuItem value="สมชาย">สมชาย</MenuItem>
-              <MenuItem value="สมหมาย">สมหมาย</MenuItem>
-              <MenuItem value="สมคิด">สมคิด</MenuItem>
-              <MenuItem value="ปฏิภาณ เพ็งเภา">ปฏิภาณ เพ็งเภา</MenuItem>
+              <MenuItem value="somchai">สมชาย</MenuItem>
+              <MenuItem value="sommhai">สมหมาย</MenuItem>
+              <MenuItem value="somkit">สมคิด</MenuItem>
+              <MenuItem value="patiphan">ปฏิภาณ เพ็งเภา</MenuItem>
             </Select>
           </Box>
         </Grid>

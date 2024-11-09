@@ -13,21 +13,23 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import useFetchForms from "../method/ProfessorForms";
 
 function ProfessorDashboard() {
-  const [professorName, setProfessorName] = useState("");
+  const [professorUsername, setProfessorUsername] = useState("");
 
   useEffect(() => {
     // Get professor name from localStorage
-    const storedProfessorName = localStorage.getItem("name_th");
-    if (storedProfessorName) {
-      setProfessorName(storedProfessorName);
+    const storedProfessorUserame = localStorage.getItem("username");
+    if (storedProfessorUserame) {
+      setProfessorUsername(storedProfessorUserame);
     }
   }, []);
 
   // Fetch the forms using the custom hook
-  const { forms: fetchedForms, loading, error } = useFetchForms(professorName);
+  const { forms: fetchedForms, loading, error } = useFetchForms(professorUsername);
+  console.log(fetchedForms);
 
   // Declare a constant 'forms' to store the fetched data
   const forms = fetchedForms;
+  console.log(professorUsername);
 
   return (
     <div>
