@@ -31,6 +31,7 @@ const Login = () => {
       localStorage.setItem('token', data.access_token);
       localStorage.setItem('username', data.username); // Store username
       localStorage.setItem('name_th', data.name_th); // Store name in Thai
+      localStorage.setItem('role', data.role); // Store role
       console.log(data.username)
       console.log(data.name_th)
       console.log(data)

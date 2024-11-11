@@ -109,14 +109,14 @@ export default function BasicTabs() {
               {loading && <TableRow><TableCell colSpan={4}>Loading...</TableCell></TableRow>}
               {error && <TableRow><TableCell colSpan={4}>{error}</TableCell></TableRow>}
               {forms.length > 0 ? (
-                  forms.map((form) => (
+                  forms.sort((a, b) => new Date(b.date) - new Date(a.date)).map((form) => (
                     console.log(form.date),
                     <TableRow>
                       <TableCell align="center" sx={{ py: 0.5 }}>{form.date}</TableCell>
                       <TableCell align="center" sx={{ py: 0.5 }}>{form.form_type}</TableCell>
                       <TableCell align="center" sx={{ py: 0.5 }}>{form.additional_fields.title}</TableCell>
                       <TableCell align="center" sx={{ py: 0.5 }}>
-                        <button>eieizaza99</button>
+                        <Button component={Link} to={`/main/student-dashboard/form-detail/${form.form_id}`} >รายละเอียด</Button>
                       </TableCell>
                     </TableRow>
                ))

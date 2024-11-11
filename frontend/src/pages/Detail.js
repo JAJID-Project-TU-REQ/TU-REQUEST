@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect,useState} from "react";
 import { Container, Paper, Typography, Grid, Button, Box } from "@mui/material";
 import { useParams } from "react-router-dom";
 import FormDetails from "../method/formDetails";
@@ -9,10 +9,16 @@ const getRole = () => {
 
 
 export default function Detail () {
-  const Role = getRole();
 
   const { form_id } = useParams(); // Extract the formId from the URL
   const { form, loading, error } = FormDetails(form_id); 
+  const [Role, setRole] = useState("");
+  useEffect(() => {
+    const storedRole = localStorage.getItem("role");
+    if (storedRole) {
+      setRole(storedRole);
+    }
+  }, []);
 
   console.log("Form ID from URL:", form_id); // Check if formId is being retrieved
   console.log("Form Details:", form); // Check if form is being retrieved
@@ -123,7 +129,7 @@ export default function Detail () {
                   คำอธิบายประกอบ :
                 </Typography>
               </Box>
-              <Box sx={{ml:0,width:"88%"}}>
+              <Box sx={{ ml: 0, width: "88%", maxHeight: "200px", overflow: "auto", whiteSpace: "pre-wrap", wordWrap: "break-word" }}>
                 <Typography
                   variant="body2"
                   color="text.secondary"
@@ -152,45 +158,45 @@ export default function Detail () {
               </Box>
             </Box>
             {Role === 'professor' && (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: 2,
-                mt: 2,
-              }}
-            >
-              <Button
+              <Box
                 sx={{
-                  borderRadius: "42px",
-                  boxShadow: "none",
-                  px: 2,
-                  py: 1,
                   display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  justifyContent: "flex-end",
+                  gap: 2,
+                  mt: 2,
                 }}
-                variant="contained"
-                color="error"
               >
-                ไม่อนุมัติ
-              </Button>
-              <Button
-                sx={{
-                  borderRadius: "42px",
-                  boxShadow: "none",
-                  px: 2,
-                  py: 1,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-                variant="contained"
-                color="success"
-              >
-                อนุมัติ
-              </Button>
-            </Box>
+                <Button
+                  sx={{
+                    borderRadius: "42px",
+                    boxShadow: "none",
+                    px: 2,
+                    py: 1,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                  variant="contained"
+                  color="error"
+                >
+                  ไม่อนุมัติ
+                </Button>
+                <Button
+                  sx={{
+                    borderRadius: "42px",
+                    boxShadow: "none",
+                    px: 2,
+                    py: 1,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                  variant="contained"
+                  color="success"
+                >
+                  อนุมัติ
+                </Button>
+              </Box>
             )}
         </Box>
         </Paper>

@@ -13,6 +13,7 @@ import ProtectedLayout from "./ProtectedLayout";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 import Detail from "./pages/Detail";
+import StudentFormDetail from "./pages/StudentFormDetail";
 
 
 const router = createBrowserRouter([
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
           },
           {
             path: "/main/professor-dashboard/form-detail/:form_id",
+            element: <Detail />
+          },
+          {
+            path: "/main/student-dashboard/form-detail/:form_id",
             element: <Detail />
           },
           {

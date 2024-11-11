@@ -55,7 +55,7 @@ function ProfessorDashboard() {
                 {loading && <TableRow><TableCell colSpan={4}>Loading...</TableCell></TableRow>}
                 {error && <TableRow><TableCell colSpan={4}>{error}</TableCell></TableRow>}
                 {forms.length > 0 ? (
-                  forms.map((form) => (
+                  forms.sort((a, b) => new Date(b.date) - new Date(a.date)).map((form) => (
                     console.log(form.date),
                     <TableRow key={form.form_id}>
                       <TableCell align="center" sx={{ py: 0.5 }}>{form.date}</TableCell>
@@ -98,7 +98,7 @@ function ProfessorDashboard() {
                 {loading && <TableRow><TableCell colSpan={4}>Loading...</TableCell></TableRow>}
                 {error && <TableRow><TableCell colSpan={4}>{error}</TableCell></TableRow>}
                 {forms.length > 0 ? (
-                  forms.map((form) => (
+                  forms.sort((a, b) => new Date(b.date) - new Date(a.date)).map((form) => (
                     console.log(form.date),
                     <TableRow key={form.form_id}>
                       <TableCell align="center" sx={{ py: 0.5 }}>{form.date}</TableCell>
