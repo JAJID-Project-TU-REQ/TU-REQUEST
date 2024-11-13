@@ -30,45 +30,12 @@ const Sidebar = () => {
 
 
   return (
-    <>
-    <SwipeableDrawer
-      anchor="left"
-      open={true} 
-      sx={{width: {sm: 300,},[`& .MuiDrawer-paper`]: { width: 300, }, display: {md: 'flex', sm: 'none', xs: 'none'}}}
-      variant={"permanent"}
-    >
-      <Toolbar />
-      <Box >
-        <Divider />
-          <List> 
-            <ListItem
-                  button
-                  onClick={() => {
-                    navigate('student-dashboard');
-                    handleToggle();
-                  }}
-              >
-                <ListItemIcon
-                  sx={styles.icons}
-                >
-                  <AccessTimeIcon/>
-                </ListItemIcon>
-                <ListItemText
-                  sx={styles.text}
-                  primary={'สถานะ'}
-                />
-              </ListItem> 
-              <Divider/>
-            {sidebarItem.map((item, index) => (
-              <MyListItem item={item} key={item.id} styles={styles}/>
-            ))}
-          </List>
-          </Box>
-    </SwipeableDrawer>
+    <Grid2>
+   
     <SwipeableDrawer
       anchor="left"
       open={isToggled}
-      sx={{width: {sm: 300,},[`& .MuiDrawer-paper`]: { width: 300, }, display: {md: 'none', sm: 'flex', xs: 'flex'}}}
+      sx={{width: {sm: 300,},[`& .MuiDrawer-paper`]: { width: 300, }}}
       onClose={handleToggle}
       variant={"temporary"}
     >
@@ -85,6 +52,7 @@ const Sidebar = () => {
                   onClick={() => {
                     navigate('student-dashboard');
                   }}
+                  sx={{borderRadius: 2, mb: 1}}
               >
                 <ListItemIcon
                   sx={styles.icons}
@@ -103,7 +71,7 @@ const Sidebar = () => {
           </List>
           </Box>
     </SwipeableDrawer>
-    </>
+    </Grid2>
     
   );
 };

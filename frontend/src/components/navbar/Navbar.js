@@ -18,24 +18,9 @@ const Navbar = () => {
 
   return (
     <>
-       <AppBar sx={{boxShadow: 'none' ,backgroundColor: '#fff', display: {md: 'none', sm: 'flex', xs: 'flex'}, justifyContent: 'center', zIndex: (theme) => theme.zIndex.drawer }} >
+      <AppBar sx={{boxShadow: 'none' ,backgroundColor: '#fff', justifyContent: 'center',}} >
         <Toolbar >
-            <IconButton sx={{mr: 2, display: {sm: '', md: 'none'}}} onClick={handleToggle}>
-             <MenuIcon />
-            </IconButton>
-            <Grid2 item sx={{flexGrow: 1}}>
-            <img src={logo} alt="Thamasart" style={{ height: '40px' }} />
-            </Grid2>
-            <Typography variant="body1" sx={{ color: '#000', mr: 2 }}>{full_name}</Typography>
-            <IconButton>
-              <IconPerson />
-            </IconButton>
-        </Toolbar>
-        <Divider />
-      </AppBar>
-      <AppBar sx={{boxShadow: 'none' ,backgroundColor: '#fff', display: {md: 'flex', sm: 'none', xs: 'none'}, justifyContent: 'center', zIndex: (theme) => theme.zIndex.drawer + 1}} >
-        <Toolbar >
-            <IconButton sx={{mr: 2, display: {sm: '', md: 'none'}}} onClick={handleToggle}>
+            <IconButton sx={{mr: 2}} onClick={handleToggle}>
              <MenuIcon />
             </IconButton>
             <Grid2 item sx={{flexGrow: 1}}>
