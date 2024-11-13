@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, File, UploadFile, Depends,
+from fastapi import FastAPI, HTTPException, File, UploadFile, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorGridFSBucket
@@ -106,23 +106,33 @@ async def register(user: Users):
 
 @app.post("/forms")
 async def submit_form(form_data: BaseFormModel):
-    # Insert the form data into MongoDB
-    form_data_dict = form_data.dict(exclude_unset=True)
+    # Convert form data to a dictionary and exclude unset fields
+    form_data_dict = form_data.dict(exclude_unset=False)
+
+    # Set the current date if it's missing
+    if 'date' not in form_data_dict:
+        form_data_dict['date'] = datetime.utcnow().strftime('%Y-%m-%d')  # Set current date if missing
 
     # Initialize the approval chain with professors in the correct order
     approval_chain = [
-        {"professor": "admin", "status": ApprovalStatus.pending, "approval_order": 1},
-        {"professor": form_data.professor, "status": ApprovalStatus.pending, "approval_order": 2},
-        {"professor": "xmen888", "status": ApprovalStatus.pending, "approval_order": 3}
+        {"professor": "admin", "status": ApprovalStatus.pending, "approval_order": 1, "comment": None},
+        {"professor": form_data.professor, "status": ApprovalStatus.pending, "approval_order": 2, "comment": None},
+        {"professor": "xmen888", "status": ApprovalStatus.pending, "approval_order": 3, "comment": None}
     ]
     
+    # Add the approval chain to the form data
     form_data_dict["approval_chain"] = approval_chain
 
-    # Store form in MongoDB (you should replace db["forms"].insert_one with your actual MongoDB insert method)
-    result = await db["forms"].insert_one(form_data_dict)
+    # Store the form in MongoDB
+    result = await forms_collection.insert_one(form_data_dict)
 
+    # Add the form ID to the form data after insertion
     form_data_dict["form_id"] = str(result.inserted_id)
+    
+    # Update the form with the generated form ID
+    await forms_collection.update_one({"_id": result.inserted_id}, {"$set": {"form_id": str(result.inserted_id)}})
 
+    # Return the inserted ID as part of the response
     return {"inserted_id": str(result.inserted_id)}
 
 #Read-one form by form_id field
@@ -153,38 +163,75 @@ async def read_all_form():
 # Endpoint for professor approval or disapproval
 @app.patch("/forms/{form_id}/approve")
 async def approve_form(form_id: str, professor: str, status: str, comment: Optional[str] = None):
-    # Find the form by form_id
-    form = await forms_collection.find_one(form_id)
+    # ค้นหาฟอร์มจาก form_id
+    form = await forms_collection.find_one({"form_id": form_id})
     if not form:
         raise HTTPException(status_code=404, detail="Form not found")
-    
-    # Find the professor in the approval chain
-    approval = next((a for a in form.approval_chain if a.professor == professor), None)
+
+    # ค้นหาอาจารย์ใน approval_chain ตามชื่ออาจารย์
+    approval = next((a for a in form["approval_chain"] if a["professor"] == professor), None)
     if not approval:
         raise HTTPException(status_code=400, detail="Professor not found in approval chain")
-    
-    # Update the professor's approval status
-    approval.status = status
-    approval.comment = comment
-    if status == "disapproved":
-        form.status = "disapproved"
+
+    # อัปเดตสถานะและความคิดเห็นของอาจารย์
+    approval["status"] = status
+    approval["comment"] = comment if status == "disapproved" else None
+
+    # ถ้าคำร้องได้รับการอนุมัติจากอาจารย์ทุกคนใน approval_chain
+    if all(a["status"] == "approved" for a in form["approval_chain"]):
+        form["status"] = "approved"
     else:
-        # Move to the next approval
-        form.status = "approved" if all(a.status == "approved" for a in form.approval_chain) else "pending"
-    
-    await form.save()
+        form["status"] = "pending"
+
+    # อัปเดตฟอร์มในฐานข้อมูล
+    result = await forms_collection.update_one(
+        {"form_id": form_id},
+        {"$set": {"approval_chain": form["approval_chain"], "status": form["status"]}}
+    )
+
+    if result.modified_count == 0:
+        raise HTTPException(status_code=500, detail="Failed to update form status")
+
     return {"message": "Form status updated successfully", "form": form}
 
 #Read-all form query by professor
 @app.get("/professor_forms/{professor}", response_model=List[BaseFormModel])
 async def get_forms_by_professor(professor: str):
     try:
-        forms = await forms_collection.find({"professor": professor}).to_list(length=100)
+        # ดึงฟอร์มทั้งหมดที่เกี่ยวข้องกับอาจารย์นี้
+        forms = await forms_collection.find({"approval_chain.professor": professor}).to_list(length=100)
+        
         if not forms:
             raise HTTPException(status_code=404, detail="No forms found for this professor")
-        return forms
+
+        # กรองฟอร์มที่อนุมัติได้ตามลำดับการอนุมัติ
+        filtered_forms = []
+        for form in forms:
+            # หาตำแหน่งใน approval_chain
+            approval_chain = form.get("approval_chain", [])
+            professor_index = next((index for index, item in enumerate(approval_chain) if item["professor"] == professor), -1)
+            
+            if professor_index == -1:
+                continue  # ถ้าไม่พบอาจารย์ใน approval_chain ให้ข้ามฟอร์มนี้
+
+            # ตรวจสอบว่าอาจารย์คนก่อนหน้านี้อนุมัติแล้วหรือยัง
+            if professor_index > 0:
+                previous_approval = approval_chain[professor_index - 1]
+                if previous_approval["status"] != ApprovalStatus.approved:
+                    continue  # ถ้าคนก่อนหน้านี้ยังไม่อนุมัติ ฟอร์มนี้จะไม่ถูกแสดง
+
+            # ถ้าอาจารย์นี้เป็นอาจารย์คนแรก หรืออนุมัติแล้ว ก็แสดงฟอร์มนี้
+            filtered_forms.append(form)
+
+        if not filtered_forms:
+            raise HTTPException(status_code=404, detail="No forms found for this professor in the right approval sequence")
+
+        return filtered_forms
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+
+
 
 #ไอดิวลองเขียนดู
 @app.get("/student_forms/{senderId}", response_model=List[BaseFormModel])

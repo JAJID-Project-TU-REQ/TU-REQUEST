@@ -34,8 +34,8 @@ function Normal_Request() {
       section: section
     };
 
-    // Post request to the backend
-    axios.post(form_location, {
+    // Data to be sent to backend, structured for your backend
+    const formData = {
       form_type: form_type,
       semester_year: semester_year,
       semester: semester,
@@ -43,10 +43,19 @@ function Normal_Request() {
       senderId: senderId,
       status: status,
       additional_fields: additional_fields
+    };
+
+    // Post request to the backend
+    axios.post(form_location, formData)
+    .then(res => {
+      console.log("Form submitted successfully:", res);
+      alert("ส่งคำร้องสำเร็จ"); // Success alert
     })
-    .then(res => console.log("Form submitted successfully:", res))
-    .catch(err => console.error("Error posting form data:", err));
-  };
+    .catch(err => {
+      console.error("Error posting form data:", err);
+      alert("เกิดข้อผิดพลาดในการส่งคำร้อง");
+    });
+};
 
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission
