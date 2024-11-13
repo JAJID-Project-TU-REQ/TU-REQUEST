@@ -162,37 +162,45 @@ async def read_all_form():
 
 # Endpoint for professor approval or disapproval
 @app.patch("/forms/{form_id}/approve")
-async def approve_form(form_id: str, professor: str, status: str, comment: Optional[str] = None):
-    # ค้นหาฟอร์มจาก form_id
+async def approve_form(form_id: str, professor: str, status: ApprovalStatus, comment: Optional[str] = None):
+    # Retrieve the form by ID
     form = await forms_collection.find_one({"form_id": form_id})
     if not form:
         raise HTTPException(status_code=404, detail="Form not found")
 
-    # ค้นหาอาจารย์ใน approval_chain ตามชื่ออาจารย์
-    approval = next((a for a in form["approval_chain"] if a["professor"] == professor), None)
-    if not approval:
+    # Find the professor's entry in the approval_chain
+    approval_chain = form.get("approval_chain", [])
+    current_approval = next((a for a in approval_chain if a["professor"] == professor), None)
+
+    if not current_approval:
         raise HTTPException(status_code=400, detail="Professor not found in approval chain")
+    
+    # Update status and comment if disapproved
+    current_approval["status"] = status
+    current_approval["comment"] = comment if status == ApprovalStatus.disapproved else None
 
-    # อัปเดตสถานะและความคิดเห็นของอาจารย์
-    approval["status"] = status
-    approval["comment"] = comment if status == "disapproved" else None
-
-    # ถ้าคำร้องได้รับการอนุมัติจากอาจารย์ทุกคนใน approval_chain
-    if all(a["status"] == "approved" for a in form["approval_chain"]):
-        form["status"] = "approved"
+    # Set form status to disapproved if any disapproval occurs
+    if status == ApprovalStatus.disapproved:
+        form["status"] = ApprovalStatus.disapproved
     else:
-        form["status"] = "pending"
+        # Check if all approvals are completed and mark form as approved if so
+        form["status"] = (
+            ApprovalStatus.approved if all(a["status"] == ApprovalStatus.approved for a in approval_chain)
+            else ApprovalStatus.pending
+        )
 
-    # อัปเดตฟอร์มในฐานข้อมูล
+    # Update the form in the database
     result = await forms_collection.update_one(
         {"form_id": form_id},
-        {"$set": {"approval_chain": form["approval_chain"], "status": form["status"]}}
+        {"$set": {"approval_chain": approval_chain, "status": form["status"]}}
     )
 
     if result.modified_count == 0:
         raise HTTPException(status_code=500, detail="Failed to update form status")
 
     return {"message": "Form status updated successfully", "form": form}
+
+
 
 #Read-all form query by professor
 @app.get("/professor_forms/{professor}", response_model=List[BaseFormModel])

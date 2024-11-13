@@ -3,7 +3,6 @@ from typing import Literal, Optional, Dict, Any, List
 from datetime import datetime
 from enum import Enum
 
-#Base
 class Users(BaseModel):
     username : str
     password : str
