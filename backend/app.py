@@ -83,27 +83,6 @@ async def register(user: Users):
     return {"message": "User registered successfully"}
  
 #  #Create method for all-form
-# @app.post("/forms")
-# async def submit_form(form_data: BaseFormModel):
-#     # Convert form_data to dictionary (without the 'unset' fields)
-#     form_data_dict = form_data.dict(exclude_unset=True)
-
-#     # Ensure the 'date' field is present in the dict
-#     if 'date' not in form_data_dict:
-#         form_data_dict['date'] = datetime.utcnow().strftime('%Y-%m-%d')  # Set current date if missing
-    
-#     # Insert the form data into MongoDB
-#     result = await db["forms"].insert_one(form_data_dict)
-
-#     # Add form_id to the dictionary, mapping it from the MongoDB _id
-#     form_data_dict["form_id"] = str(result.inserted_id)
-
-#     # Optionally, update the database document with the form_id if needed
-#     await db["forms"].update_one({"_id": result.inserted_id}, {"$set": {"form_id": str(result.inserted_id)}})
-
-#     # Return response with the inserted ID and form_id
-#     return {"inserted_id": str(result.inserted_id), "form_id": form_data_dict["form_id"], "date": form_data_dict["date"]}
-
 @app.post("/forms")
 async def submit_form(form_data: BaseFormModel):
     # Convert form data to a dictionary and exclude unset fields
