@@ -28,8 +28,6 @@ const Sidebar = () => {
     dispatch(toggle());  
   };
 
-  
-
 
   return (
     <>
@@ -72,7 +70,7 @@ const Sidebar = () => {
       open={isToggled}
       sx={{width: {sm: 300,},[`& .MuiDrawer-paper`]: { width: 300, }, display: {md: 'none', sm: 'flex', xs: 'flex'}}}
       onClose={handleToggle}
-      variant={"temhporary"}
+      variant={"temporary"}
     >
        <Toolbar >
             <Grid2 item sx={{flexGrow: 1}}>
