@@ -1,19 +1,17 @@
-// src/method/useFetchForms.js
-
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-function ProfessorForms(professorUsername) {
+function StudentForms(studentUsername) {
   const [forms, setForms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
   useEffect(() => {
-    if (!professorUsername) return; // Only fetch if professorName exists
+    if (!studentUsername) return;
 
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/professor_forms/${professorUsername}`);
+        const response = await axios.get(`http://localhost:8000/student_forms/${studentUsername}`);
         
         if (response.data && response.data.length === 0) {
           setForms([]);  // Set an empty array if no forms are found
@@ -30,9 +28,9 @@ function ProfessorForms(professorUsername) {
     };
 
     fetchData();
-  }, [professorUsername]);
+  }, [studentUsername]);
 
   return { forms, loading, error };
 }
 
-export default ProfessorForms;
+export default StudentForms;

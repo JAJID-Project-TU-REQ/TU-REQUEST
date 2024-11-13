@@ -14,13 +14,14 @@ class Users(BaseModel):
     room : str
 
 class BaseFormModel(BaseModel):
+    form_id : str = None
     form_type: str
     semester_year: str
     semester: str
     professor: str
     senderId: str
     status: str
-    date: datetime = Field(default_factory=datetime.utcnow)  # Automatically sets the current timestamp
+    date: str = Field(default_factory=lambda: datetime.utcnow().strftime('%Y-%m-%d'))
     additional_fields: Dict[str, Any] = {}
 
 class normalForm(BaseFormModel):

@@ -10,34 +10,37 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import useFetchForms from "../method/ProfessorForms";
+import ProfessorForms from "../method/ProfessorForms";
+import { Link } from "react-router-dom";
+import { Typography } from "@mui/material";
 
 function ProfessorDashboard() {
   const [professorUsername, setProfessorUsername] = useState("");
 
   useEffect(() => {
     // Get professor name from localStorage
-    const storedProfessorUserame = localStorage.getItem("username");
-    if (storedProfessorUserame) {
-      setProfessorUsername(storedProfessorUserame);
+    const storedProfessorUsername = localStorage.getItem("username");
+    if (storedProfessorUsername) {
+      setProfessorUsername(storedProfessorUsername);
     }
   }, []);
 
   // Fetch the forms using the custom hook
-  const { forms: fetchedForms, loading, error } = useFetchForms(professorUsername);
+  const { forms: fetchedForms, loading, error } = ProfessorForms(professorUsername);
   console.log(fetchedForms);
 
   // Declare a constant 'forms' to store the fetched data
-  const forms = fetchedForms;
+  const forms = fetchedForms || [];
   console.log(professorUsername);
 
   return (
     <div>
-      <Container sx={{ p:2}} maxWidth="lg">    
-        <Paper sx={{ p:2 }}>
-          <Box display="flex">
-            <Box flexGrow={1}></Box>
-          </Box>
+      <Container sx={{ p:2}} maxWidth="lg">
+        <Box>
+          <Typography variant="h5" sx={{fontWeight:'bold'}}>คำร้องรอดำเนินการ</Typography>
+          <Typography variant="h6" sx={{fontWeight:'bold'}}>PENDING LIST</Typography>
+        </Box>    
+        <Paper sx={{mt:1, p:2 }}>
           <TableContainer component={Paper}>
             <Table aria-label="simple table">
               <TableHead>
@@ -52,14 +55,15 @@ function ProfessorDashboard() {
                 {loading && <TableRow><TableCell colSpan={4}>Loading...</TableCell></TableRow>}
                 {error && <TableRow><TableCell colSpan={4}>{error}</TableCell></TableRow>}
                 {forms.length > 0 ? (
-                  forms.map((form, index) => (
-                    <TableRow key={index}>
-                      <TableCell align="center" sx={{ py: 0.5 }}>{new Date(form.date).toLocaleDateString()}</TableCell>
+                  forms.sort((a, b) => new Date(b.date) - new Date(a.date)).map((form) => (
+                    console.log(form.date),
+                    <TableRow key={form.form_id}>
+                      <TableCell align="center" sx={{ py: 0.5 }}>{form.date}</TableCell>
                       <TableCell align="center" sx={{ py: 0.5 }}>{form.form_type}</TableCell>
                       <TableCell align="center" sx={{ py: 0.5 }}>{form.additional_fields.title}</TableCell>
                       <TableCell align="center" sx={{ py: 0.5 }}>
                         <ButtonGroup color="primary" aria-label="outlined primary button group">
-                          <Button>รายละเอียด</Button>
+                          <Button component={Link} to={`/main/professor-dashboard/form-detail/${form.form_id}`} >รายละเอียด</Button>
                         </ButtonGroup>
                       </TableCell>
                     </TableRow>
@@ -74,12 +78,12 @@ function ProfessorDashboard() {
           </TableContainer>
         </Paper>
       </Container>
-
-      <Container sx={{ p:2, mt: 40}} maxWidth="lg">    
+      <Container sx={{mt:15, p:2}} maxWidth="lg">
+      <Box sx={{mt:10}}>
+        <Typography variant="h5" sx={{fontWeight:'bold'}}>คำร้องดำเนินการแล้ว</Typography>
+        <Typography variant="h6" sx={{fontWeight:'bold'}}>COMPLETED LIST</Typography>
+      </Box>    
         <Paper sx={{ p:2 }}>
-          <Box display="flex">
-            <Box flexGrow={1}></Box>
-          </Box>
           <TableContainer component={Paper}>
             <Table aria-label="simple table">
               <TableHead>
@@ -91,15 +95,18 @@ function ProfessorDashboard() {
                 </TableRow>
               </TableHead>
               <TableBody>
+                {loading && <TableRow><TableCell colSpan={4}>Loading...</TableCell></TableRow>}
+                {error && <TableRow><TableCell colSpan={4}>{error}</TableCell></TableRow>}
                 {forms.length > 0 ? (
-                  forms.map((form, index) => (
-                    <TableRow key={index}>
-                      <TableCell align="center" sx={{ py: 0.5 }}>{form.senderId}</TableCell>
+                  forms.sort((a, b) => new Date(b.date) - new Date(a.date)).map((form) => (
+                    console.log(form.date),
+                    <TableRow key={form.form_id}>
+                      <TableCell align="center" sx={{ py: 0.5 }}>{form.date}</TableCell>
                       <TableCell align="center" sx={{ py: 0.5 }}>{form.form_type}</TableCell>
                       <TableCell align="center" sx={{ py: 0.5 }}>{form.additional_fields.title}</TableCell>
                       <TableCell align="center" sx={{ py: 0.5 }}>
                         <ButtonGroup color="primary" aria-label="outlined primary button group">
-                          <Button>รายละเอียด</Button>
+                          <Button component={Link} to={`/main/professor-dashboard/form-detail/${form.form_id}`} >รายละเอียด</Button>
                         </ButtonGroup>
                       </TableCell>
                     </TableRow>
