@@ -3,7 +3,6 @@ import { Box, Typography, Grid, Select, MenuItem, TextField, Container, Button }
 import axios from 'axios';
 
 function Normal_Request() {
-
   // Common fields
   const [form_type] = useState('ทั่วไป');
   const [semester_year, setSemesterYear] = useState('');
@@ -18,7 +17,7 @@ function Normal_Request() {
   const [subject, setSubject] = useState('');
   const [section, setSection] = useState('');
 
-  const form_location = 'http://localhost:8000/forms'
+  const form_location = 'http://localhost:8000/forms';
 
   useEffect(() => {
     const username = localStorage.getItem('username');
@@ -27,31 +26,33 @@ function Normal_Request() {
     }
   }, []);
 
-  const FormHandler = (e) => {
+  const FormHandler = () => {
     const additional_fields = {
-      title : title,
-      content : content,
-      subject : subject,
-      section : section
+      title: title,
+      content: content,
+      subject: subject,
+      section: section
     };
-  
+
+    // Post request to the backend
     axios.post(form_location, {
-      form_type: form_type,   // Common field
-      semester_year: semester_year, // Common field
-      semester: semester,   // Common field
-      professor: professor, // Common field
-      senderId: senderId,   // Common field
-      status: status,       // Common field
-      additional_fields: additional_fields //Additional fields
-    }).then(res => (console.log(res)))
-    .catch(err => (console.error("Error posting form data",err)));  
+      form_type: form_type,
+      semester_year: semester_year,
+      semester: semester,
+      professor: professor,
+      senderId: senderId,
+      status: status,
+      additional_fields: additional_fields
+    })
+    .then(res => console.log("Form submitted successfully:", res))
+    .catch(err => console.error("Error posting form data:", err));
   };
 
-    const handleSubmit = (e) => {
-      FormHandler();
-      console.log(localStorage.getItem('username'));
-      alert("ส่งคำร้องสำเร็จ")
-    };
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Prevent default form submission
+    FormHandler();
+    alert("ส่งคำร้องสำเร็จ"); // Success alert
+  };
 
   return (
     <Container maxWidth="md" sx={{ mt: 10, mb: 5 }}>
@@ -86,7 +87,7 @@ function Normal_Request() {
             <Select id="semester" name="semester" variant="outlined" onChange={event => setSemester(event.target.value)} sx={{ width: '150px', height: '50px' }}>
               <MenuItem value="1">1</MenuItem>
               <MenuItem value="2">2</MenuItem>
-              <MenuItem value="3">summer</MenuItem>
+              <MenuItem value="summer">summer</MenuItem>
             </Select>
           </Box>
         </Grid>
@@ -155,9 +156,9 @@ function Normal_Request() {
         </Grid>
 
         {/* Submit Button */}
-        <Grid item xs={12} sx={{ mt:5, textAlign: 'center' }}>
-          <Button variant="contained" onClick={handleSubmit} sx={{mb:7,width:150,height:50,borderRadius:8}}>Submit</Button>
-          <Typography variant='h6'sx={{color:'#E1003C'}}>คำร้องที่ถูกบันทึกและส่งจะไม่สามารถแก้ไขได้ กรุณาตรวจสอบข้อมูลก่อนบันทึก</Typography>
+        <Grid item xs={12} sx={{ mt: 5, textAlign: 'center' }}>
+          <Button variant="contained" onClick={handleSubmit} sx={{ mb: 7, width: 150, height: 50, borderRadius: 8 }}>Submit</Button>
+          <Typography variant='h6' sx={{ color: '#E1003C' }}>คำร้องที่ถูกบันทึกและส่งจะไม่สามารถแก้ไขได้ กรุณาตรวจสอบข้อมูลก่อนบันทึก</Typography>
         </Grid>
       </Grid>
     </Container>
