@@ -23,6 +23,7 @@ const MyListItem = (props) => {
         button
         key={item.id}
         onClick={handleToggle}
+        sx={{borderRadius: 2, mt: 1}}
     >
         <ListItemIcon
             sx={styles.icons}
@@ -41,7 +42,7 @@ const MyListItem = (props) => {
                 button
                 onClick={() => navigate(child.routes)}
                 key={child.id}
-                sx={{pl: 12}}
+                sx={{pl: 12, mt: 0.5, borderRadius: 2}}
             >
                 <ListItemText
                     sx={props.styles.childernText}
