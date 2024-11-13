@@ -3,6 +3,7 @@ export const styles = {
         width: 320,
         '& .MuiDrawer-paper': {
             width: 320,
+        
         },
     },
     icons: {
@@ -13,6 +14,13 @@ export const styles = {
         '& span': {
             marginLeft: '-10px',
             fontWeight: '600',
+            fontSize: '16px',
+        }
+    },
+    childernText: {
+        '& span': {
+            marginLeft: '-10px',
+            fontWeight: '100',
             fontSize: '16px',
         }
     }

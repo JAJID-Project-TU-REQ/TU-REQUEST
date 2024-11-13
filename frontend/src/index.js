@@ -13,6 +13,8 @@ import ProtectedLayout from "./ProtectedLayout";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 import Detail from "./pages/Detail";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 
 const router = createBrowserRouter([
@@ -25,23 +27,23 @@ const router = createBrowserRouter([
     element: <ProtectedLayout/>,
     children: [
       {
-        path: "/main",
+        path: "",
         element: <App />,
         children: [
           {
-             path: "/main/student-dashboard",
+             path: "student-dashboard",
             element: <BasicTabs />,
           },
           {
-            path: "/main/professor-dashboard",
+            path: "professor-dashboard",
             element: <ProfessorDashboard />
           },
           {
-            path: "/main/normal-request",
+            path: "normal-request",
             element: <Normal_Request />
           },
         {
-          path: "/main/detail",
+          path: "detail",
           element: <Detail />
         }
 
@@ -51,11 +53,11 @@ const router = createBrowserRouter([
   },
   ]);
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  
-  <React.StrictMode>
+  ReactDOM.createRoot(document.getElementById("root")).render(
     <ThemeProvider theme={theme}>
-    <RouterProvider router={router} />
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
     </ThemeProvider>
-  </React.StrictMode>
-);
+  );
+  

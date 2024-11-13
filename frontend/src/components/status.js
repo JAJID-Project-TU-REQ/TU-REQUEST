@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Tabs, Tab, Typography, Grid } from "@mui/material";
+import { Box, Tabs, Tab, Typography, Grid, Toolbar } from "@mui/material";
 import PropTypes from "prop-types";
 import ArticleIcon from "@mui/icons-material/Article";
 import EditNoteIcon from "@mui/icons-material/EditNote";
@@ -44,8 +44,9 @@ export default function BasicTabs() {
   };
 
   return (
-    <Box>
-      <Box sx={{ mt: 4.9, width: "100%", height: "20%", textAlign: "center" }}>
+    <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%'}}>
+      <Toolbar />
+      <Box >
         <Typography variant="h4" sx={{ fontWeight: "bold" }}>
           สถานะคำร้อง
         </Typography>
@@ -53,9 +54,9 @@ export default function BasicTabs() {
            REQUEST STATUS
         </Typography>
       </Box>
-      <Box sx={{ width: "100%", height: "70%" }}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <Tabs value={value} onChange={handleChange} centered>
+      <Box sx={{width: '100%',}}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider",width: '100%', }}>
+          <Tabs value={value} onChange={handleChange} centered sx={{display: 'flex', justifyContent: 'flex-start', width: '100%'}}>
             <Tab
               icon={<ArticleIcon />}
               iconPosition="start"
@@ -88,34 +89,3 @@ export default function BasicTabs() {
   );
 }
 
-BasicTabs.propTypes = {
-  value: PropTypes.number.isRequired,
-
-  //   return (
-  //     <Box>
-  //       <Box sx={{ mt:4.9 , width: '100%',height:'30%' ,textAlign:'center'}}>
-  //         <Typography variant='h4'>สถานะคำร้อง</Typography>
-  //         <Typography variant='h6'>Request Status</Typography>
-  //       </Box>
-  //         <Box sx={{ width: '100%' ,height:'70%'}}>
-  //         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-  //         <Tabs value={value} onChange={handleChange} centered>
-  //             <Tab icon={<ArticleIcon />} iconPosition="start" label="คำร้องทั้งหมด" />
-  //             <Tab icon={<EditNoteIcon/>}iconPosition="start" label="อยู่ระหว่างการดำเนินงาน" />
-  //             <Tab icon= {<CheckCircleOutlineIcon/>} iconPosition="start" label="คำร้องเสร็จสิ้นแล้ว"/>
-  //         </Tabs>
-  //       </Box>
-  //       <CustomTabPanel value={value} index={0}>
-  //         Item One
-  //       </CustomTabPanel>
-  //       <CustomTabPanel value={value} index={1}>
-  //         Item Two
-  //       </CustomTabPanel>
-  //       <CustomTabPanel value={value} index={2}>
-  //         Item Three
-  //       </CustomTabPanel>
-  //     </Box>
-  //     </Box>
-  //   );
-  // }
-};

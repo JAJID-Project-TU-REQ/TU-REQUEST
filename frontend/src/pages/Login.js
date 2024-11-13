@@ -35,7 +35,7 @@ const Login = () => {
       console.log(data.name_th)
       console.log(data)
       if (data.role === 'student') {
-        navigate(`/main/student-dashboard`); // Redirect based on role
+        navigate(`/student-dashboard`); // Redirect based on role
       } else {
         navigate(`/main/professor-dashboard`); // Redirect based on role
       }
