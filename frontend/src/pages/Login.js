@@ -38,7 +38,7 @@ const Login = () => {
       if (data.role === 'student') {
         navigate(`/student-dashboard`); // Redirect based on role
       } else {
-        navigate(`/main/professor-dashboard`); // Redirect based on role
+        navigate(`/professor-dashboard`); // Redirect based on role
       }
     } else {
       setError('Invalid username or password');
