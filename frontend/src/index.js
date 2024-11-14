@@ -20,8 +20,6 @@ import StudentFormDetail from "./pages/StudentFormDetail";
 const token = localStorage.getItem('token');
 
 const router = createBrowserRouter([
- 
-  
       {
         element: <App />,
         children: [
@@ -42,7 +40,7 @@ const router = createBrowserRouter([
           },
         
         {
-          path: "detail/:id",
+          path: "studentFromDetail/:form_id",
           element: < StudentFormDetail/>
         }
       ]

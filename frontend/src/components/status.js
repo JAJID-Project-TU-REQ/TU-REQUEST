@@ -9,6 +9,7 @@ import { Grid2,Container,Paper,Table,TableContainer,TableHead,TableRow,TableCell
 import Footer from "./footer";
 import { Link } from "react-router-dom";
 import StudentForms from "../method/StudentForms";
+import StudentFormDetail from "../pages/StudentFormDetail";
 
 
 function CustomTabPanel(props) {
@@ -109,7 +110,7 @@ export default function BasicTabs() {
                       <TableCell align="center" sx={{ py: 0.5,width:"100%" }}>{form.form_type}</TableCell>
                       <TableCell align="center" sx={{ py: 0.5,width:"100%" }}>{form.additional_fields.title}</TableCell>
                       <TableCell align="center" sx={{ py: 0.5,width:"100%" }}>
-                        <Button component={Link} to={`/detail/${form.form_id}`} >รายละเอียด</Button>
+                        <Button component={Link} to={`StudentFromDetail/${form.form_id}`} >รายละเอียด</Button>
                       </TableCell>
                     </TableRow>
                ))

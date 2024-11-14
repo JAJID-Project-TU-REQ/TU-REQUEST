@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Paper, Typography, Grid, Button, Box} from "@mui/material";
+import { Container, Paper, Typography, Grid, Button, Box, Toolbar} from "@mui/material";
 import { useParams } from "react-router-dom";
 import FormDetails from "../method/formDetails";
 const getRole = () => {
@@ -16,6 +16,7 @@ export default function StudentFormDetail () {
 
   console.log("Form ID from URL:", form_id); // Check if formId is being retrieved
   console.log("Form Details:", form); // Check if form is being retrieved
+  console.log("useParams:", useParams()); // Check if useParams is working
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
@@ -23,6 +24,7 @@ export default function StudentFormDetail () {
   return (
     <>
       <Container>
+        <Toolbar />
         <Box sx={{ width: "100%", maxWidth: "1200px", mx: "auto" }}>
           <Box
             sx={{
