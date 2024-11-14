@@ -14,14 +14,6 @@ import StudentForms from "../method/StudentForms";
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
-  // // Fetch the forms using the custom hook
-  // const { forms: fetchedForms, loading, error } = StudentForms(studentUsername);
-
-  // // Declare a constant 'forms' to store the fetched data
-  // const forms = fetchedForms || [];
-
-  // console.log(forms);
-
   return (
     <div
       role="tabpanel"
@@ -54,7 +46,6 @@ export default function BasicTabs() {
   const { forms, loading, error } = StudentForms(studentUsername);
 
   useEffect(() => {
-    // Get professor name from localStorage
     const storedStudentUsername = localStorage.getItem("username");
     if (storedStudentUsername) {
       setStudentUsername(storedStudentUsername);
@@ -100,10 +91,10 @@ export default function BasicTabs() {
           <TableContainer sx={{display: 'flex', flexDirection: 'column', width: '100%'}}>
             <TableHead>
               <TableRow sx={{display: 'flex', width: '100%'}}>
-                <TableCell align="" sx={{ py: 0.5, flexGrow: 1 }}>วันที่</TableCell>
-                <TableCell align="" sx={{ py: 0.5, flexGrow: 1 }}>ประเภท</TableCell>
-                <TableCell align="" sx={{ py: 0.5, flexGrow: 1 }}>หัวข้อคำร้อง</TableCell>
-                <TableCell align="" sx={{ py: 0.5, flexGrow: 1 }}>รายละเอียด</TableCell>
+                <TableCell align="center" sx={{ py: 0.5,width:"100%"}}>วันที่</TableCell>
+                <TableCell align="center" sx={{ py: 0.5,width:"100%"}}>ประเภท</TableCell>
+                <TableCell align="center" sx={{ py: 0.5,width:"100%"}}>หัวข้อคำร้อง</TableCell>
+                <TableCell align="center" sx={{ py: 0.5,width:"100%"}}>รายละเอียด</TableCell>
               </TableRow>
             </TableHead>
             
@@ -114,11 +105,11 @@ export default function BasicTabs() {
                   forms.sort((a, b) => new Date(b.date) - new Date(a.date)).map((form) => (
                     console.log(form.date),
                   <TableRow sx={{display: 'flex', width: '100%'}}>
-                      <TableCell align="center" sx={{ py: 0.5 }}>{form.date}</TableCell>
-                      <TableCell align="center" sx={{ py: 0.5 }}>{form.form_type}</TableCell>
-                      <TableCell align="center" sx={{ py: 0.5 }}>{form.additional_fields.title}</TableCell>
-                      <TableCell align="center" sx={{ py: 0.5 }}>
-                        <Button component={Link} to={`/main/student-dashboard/form-detail/${form.form_id}`} >รายละเอียด</Button>
+                      <TableCell align="center" sx={{ py: 0.5,width:"100%" }}>{form.date}</TableCell>
+                      <TableCell align="center" sx={{ py: 0.5,width:"100%" }}>{form.form_type}</TableCell>
+                      <TableCell align="center" sx={{ py: 0.5,width:"100%" }}>{form.additional_fields.title}</TableCell>
+                      <TableCell align="center" sx={{ py: 0.5,width:"100%" }}>
+                        <Button component={Link} to={`/detail/${form.form_id}`} >รายละเอียด</Button>
                       </TableCell>
                     </TableRow>
                ))

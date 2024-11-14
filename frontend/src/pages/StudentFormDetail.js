@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Paper, Typography, Grid, Button, Box } from "@mui/material";
+import { Container, Paper, Typography, Grid, Button, Box} from "@mui/material";
 import { useParams } from "react-router-dom";
 import FormDetails from "../method/formDetails";
 const getRole = () => {

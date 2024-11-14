@@ -15,25 +15,24 @@ import theme from "./theme";
 import Detail from "./pages/Detail";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import StudentFormDetail from "./pages/StudentFormDetail";
 
 const token = localStorage.getItem('token');
+
 const router = createBrowserRouter([
-  {
-    element: <App />,
-    children: [
-      {
-         path: "/",
-        element: (token ? (<BasicTabs />) : (<Login />)),
-      },
-    ],
-    },
-  {
-    element: <ProtectedLayout/>,
-    children: [
+ 
+  
       {
         element: <App />,
         children: [
           {
+             path: "/",
+            element: (token ? <BasicTabs />: <Login />),
+          },
+          {
+          element: <ProtectedLayout />,
+          children:
+          [{
             path: "professor-dashboard",
             element: <ProfessorDashboard />
           },
@@ -41,14 +40,14 @@ const router = createBrowserRouter([
             path: "normal-request",
             element: <Normal_Request />
           },
+        
         {
-          path: "detail",
-          element: <Detail />
+          path: "detail/:id",
+          element: < StudentFormDetail/>
         }
-
       ]
-    },
-    ],
+      }
+      ]
   },
   ]);
 

@@ -10,9 +10,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import PropTypes from 'prop-types';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 import ProfessorForms from "../method/ProfessorForms";
 import { Link } from "react-router-dom";
-import { Typography } from "@mui/material";
+import { Toolbar, Typography } from "@mui/material";
 
 function ProfessorDashboard() {
   const [professorUsername, setProfessorUsername] = useState("");
@@ -35,6 +38,7 @@ function ProfessorDashboard() {
 
   return (
     <div>
+      <Toolbar />
       <Container sx={{ p:2}} maxWidth="lg">
         <Box>
           <Typography variant="h5" sx={{fontWeight:'bold'}}>คำร้องรอดำเนินการ</Typography>
