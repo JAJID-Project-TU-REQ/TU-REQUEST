@@ -16,24 +16,23 @@ import Detail from "./pages/Detail";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 
-
+const token = localStorage.getItem('token');
 const router = createBrowserRouter([
- 
   {
-    path: "/",
-    element:<Login />,
-  },
+    element: <App />,
+    children: [
+      {
+         path: "/",
+        element: (token ? (<BasicTabs />) : (<Login />)),
+      },
+    ],
+    },
   {
     element: <ProtectedLayout/>,
     children: [
       {
-        path: "",
         element: <App />,
         children: [
-          {
-             path: "student-dashboard",
-            element: <BasicTabs />,
-          },
           {
             path: "professor-dashboard",
             element: <ProfessorDashboard />

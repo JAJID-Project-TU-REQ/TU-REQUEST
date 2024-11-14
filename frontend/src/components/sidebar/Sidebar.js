@@ -50,7 +50,7 @@ const Sidebar = () => {
             <ListItem
                   button
                   onClick={() => {
-                    navigate('student-dashboard');
+                    navigate('/');
                   }}
                   sx={{borderRadius: 2, mb: 1}}
               >

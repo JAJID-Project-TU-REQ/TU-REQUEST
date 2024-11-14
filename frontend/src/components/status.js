@@ -81,29 +81,29 @@ export default function BasicTabs() {
           <Tabs value={value} onChange={handleChange} centered sx={{display: 'flex', justifyContent: 'flex-start', width: '100%'}}>
             <Tab
               icon={<ArticleIcon />}
-              iconPosition="start"
+              iconPosition=""
               label="คำร้องทั้งหมด"
             />
             <Tab
               icon={<EditNoteIcon />}
-              iconPosition="start"
+              iconPosition=""
               label="อยู่ระหว่างการดำเนินงาน"
             />
             <Tab
               icon={<CheckCircleOutlineIcon />}
-              iconPosition="start"
+              iconPosition=""
               label="คำร้องเสร็จสิ้นแล้ว"
             />
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-          <TableContainer>
+          <TableContainer sx={{display: 'flex', flexDirection: 'column', width: '100%'}}>
             <TableHead>
-              <TableRow>
-                <TableCell align="center" sx={{ py: 0.5 }}>วันที่</TableCell>
-                <TableCell align="center" sx={{ py: 0.5 }}>ประเภท</TableCell>
-                <TableCell align="center" sx={{ py: 0.5 }}>หัวข้อคำร้อง</TableCell>
-                <TableCell align="center" sx={{ py: 0.5 }}>รายละเอียด</TableCell>
+              <TableRow sx={{display: 'flex', width: '100%'}}>
+                <TableCell align="" sx={{ py: 0.5, flexGrow: 1 }}>วันที่</TableCell>
+                <TableCell align="" sx={{ py: 0.5, flexGrow: 1 }}>ประเภท</TableCell>
+                <TableCell align="" sx={{ py: 0.5, flexGrow: 1 }}>หัวข้อคำร้อง</TableCell>
+                <TableCell align="" sx={{ py: 0.5, flexGrow: 1 }}>รายละเอียด</TableCell>
               </TableRow>
             </TableHead>
             
@@ -113,7 +113,7 @@ export default function BasicTabs() {
               {forms.length > 0 ? (
                   forms.sort((a, b) => new Date(b.date) - new Date(a.date)).map((form) => (
                     console.log(form.date),
-                    <TableRow>
+                  <TableRow sx={{display: 'flex', width: '100%'}}>
                       <TableCell align="center" sx={{ py: 0.5 }}>{form.date}</TableCell>
                       <TableCell align="center" sx={{ py: 0.5 }}>{form.form_type}</TableCell>
                       <TableCell align="center" sx={{ py: 0.5 }}>{form.additional_fields.title}</TableCell>
@@ -123,8 +123,8 @@ export default function BasicTabs() {
                     </TableRow>
                ))
               ) : (
-                <TableRow>
-                  <TableCell colSpan={4} align="center">No forms found for this professor.</TableCell>
+                <TableRow sx={{display: 'flex', width: '100%'}}>
+                  <TableCell align="" sx={{ py: 0.5, flexGrow: 1 }}>No forms found for this professor.</TableCell>
                 </TableRow>
               )}
             </TableBody>
