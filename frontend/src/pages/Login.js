@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Box, Typography, TextField, Button, AppBar, Toolbar, IconButton, } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/images/logo.png';
-
-
+import { login } from '../redux/loginState';
+import { useDispatch } from 'react-redux';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -23,9 +23,9 @@ const Login = () => {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded', // Correct content type
       },
+
       body: formData, // Send URL-encoded data
     });
-
     if (response.ok) {
       const data = await response.json();
       localStorage.setItem('token', data.access_token);
@@ -36,7 +36,7 @@ const Login = () => {
       console.log(data.name_th)
       console.log(data)
       if (data.role === 'student') {
-        window.location.reload(); // Redirect based on role
+        changeLoginState() // Redirect based on role
       } else {
         navigate(`/professor-dashboard`); // Redirect based on role
       }
@@ -44,6 +44,11 @@ const Login = () => {
       setError('Invalid username or password');
     }
   };
+
+  const dispatch = useDispatch();
+  const changeLoginState = () => {
+    dispatch(login());
+  }
 
   return (
     <>

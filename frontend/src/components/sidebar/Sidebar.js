@@ -6,13 +6,13 @@ import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { sidebarItem } from './consts/sidebarItem';
+import { studentItem, professorItem } from './consts/sidebarItem';
 import Box from '@mui/material/Box';
 import { styles } from './styles';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { toggle } from '../../redux/toggleSlice';
-import {Grid2} from '@mui/material';
+import {Grid2, Portal} from '@mui/material';
 import logo from '../../assets/images/logo.png';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import MyListItem from '../common/listItem/MyListItem';
@@ -23,11 +23,12 @@ const Sidebar = () => {
   
   const isToggled = useSelector((state) => state.toggle.value);
   const dispatch = useDispatch();
-
   const handleToggle = () => {
     dispatch(toggle());  
   };
 
+  const role = localStorage.getItem('role');
+  const sidebarItem = (role === 'student' ? studentItem: professorItem);
 
   return (
     <Grid2>

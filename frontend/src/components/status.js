@@ -110,7 +110,7 @@ export default function BasicTabs() {
                       <TableCell align="center" sx={{ py: 0.5,width:"100%" }}>{form.form_type}</TableCell>
                       <TableCell align="center" sx={{ py: 0.5,width:"100%" }}>{form.additional_fields.title}</TableCell>
                       <TableCell align="center" sx={{ py: 0.5,width:"100%" }}>
-                        <Button component={Link} to={`StudentFromDetail/${form.form_id}`} >รายละเอียด</Button>
+                        <Button component={Link} to={`Detail/${form.form_id}`} >รายละเอียด</Button>
                       </TableCell>
                     </TableRow>
                ))

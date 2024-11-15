@@ -1,5 +1,5 @@
 import React, { useEffect,useState} from "react";
-import { Container, Paper, Typography, Grid, Button, Box } from "@mui/material";
+import { Container, Paper, Typography, Grid, Button, Box, Toolbar } from "@mui/material";
 import { useParams } from "react-router-dom";
 import FormDetails from "../method/formDetails";
 const getRole = () => {
@@ -29,6 +29,7 @@ export default function Detail () {
   return (
     <>
       <Container>
+        <Toolbar />
         <Box sx={{ width: "100%", maxWidth: "1200px", mx: "auto" }}>
           <Box
             sx={{
@@ -100,7 +101,7 @@ export default function Detail () {
                 <Typography variant="subtitle2" fontWeight="bold" gutterBottom sx={{ fontSize: "1.1rem" }}>
                   เขียนวันที่ :
                 </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ fontSize: "1.1rem" }}>
+                <Typography variant="body2" color="text.secondary" sx={{ fontSize: "1.1rem" , ml: 1}}>
                   {form.date}
                 </Typography>
               </Grid>
