@@ -14,6 +14,9 @@ class Users(BaseModel):
     major : str
     room : str
 
+class Subject(BaseModel):
+    subject : str
+
 class ApprovalStatus(str, Enum):
     pending = "pending"
     approved = "approved"

@@ -12,7 +12,7 @@ from datetime import datetime
 #App object
 app = FastAPI()
 
-from model import Users, BaseFormModel, ProfessorApproval, ApprovalStatus
+from model import Users, BaseFormModel, ProfessorApproval, ApprovalStatus, Subject
 
 origins = ["http://localhost:3000"] # Replace with your frontend URL
 
@@ -28,6 +28,7 @@ client = AsyncIOMotorClient("mongodb+srv://keerati:1234@cluster0.me7rp.mongodb.n
 db = client.TUREQ # Database สำหรับ TUREQ
 users_collection = db.users # Collection สำหรับ users
 forms_collection = db.forms # Collection สำหรับ forms
+subjects_collection = db.subjects # Collection สำหรับ subjects
 fs_bucket = AsyncIOMotorGridFSBucket(db)
 
 # Secret key and Login Manager
@@ -82,7 +83,7 @@ async def register(user: Users):
     await users_collection.insert_one(new_user)
     return {"message": "User registered successfully"}
  
-#  #Create method for all-form
+#Create method for all-form
 @app.post("/forms")
 async def submit_form(form_data: BaseFormModel):
     # Convert form data to a dictionary and exclude unset fields
@@ -113,6 +114,18 @@ async def submit_form(form_data: BaseFormModel):
 
     # Return the inserted ID as part of the response
     return {"inserted_id": str(result.inserted_id)}
+
+#Create method for add_subject
+@app.post("/add_subject")
+async def add_subject(subject: str):
+    # Check if the subject already exists
+    existing_subject = await subjects_collection.find_one({"subject": subject})
+    if existing_subject:
+        raise HTTPException(status_code=400, detail="Subject already exists")
+    
+    # Add the subject to the list of available subjects
+    result = await subjects_collection.insert_one({"subject": subject})
+    return {"message": "Subject added successfully"}
 
 #Read-one form by form_id field
 @app.get("/forms/{form_id}")
@@ -218,9 +231,7 @@ async def get_forms_by_professor(professor: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
-
-
-#ไอดิวลองเขียนดู
+#ไอดิวลองเขียนดู fetch ฟอร์มที่นักศึกษาส่ง
 @app.get("/student_forms/{senderId}", response_model=List[BaseFormModel])
 async def get_forms_by_student(senderId: str):
     try:
@@ -229,29 +240,28 @@ async def get_forms_by_student(senderId: str):
             raise HTTPException(status_code=404, detail="No forms found for this student")
         return forms
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")    
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")   
 
-#Update form (old version)
-# @app.put("/forms/{form_id}")
-# async def put_form(form_id: str, form : DefaultForm):
-#     result = await forms_collection.update_one(
-#     {"_id": ObjectId(form_id)}, {"$set": form.dict(exclude_unset=True) }
-#     )
-#     if result.modified_count == 1:
-#         return {
-#             "id" : form_id, 
-#             "form_type" : form.form_type,
-#             "semester_year": form.semester_year,
-#             "semester": form.semester,
-#             "title": form.title,
-#             "content": form.content,
-#             "professor": form.professor,
-#             "subject": form.subject,
-#             "section": form.section,
-#             "senderId": form.senderId,
-#             "status": form.status
-#             }
-#     raise HTTPException(404, "error")
+#fetch ข้อมูลอาจารย์ทั้งหมด
+@app.get("/get_professor", response_model=List[Users])
+async def get_professor():
+    try:
+        professors = await users_collection.find({"role":"professor"}).to_list(length=100)
+        if not professors:
+            raise HTTPException(status_code=404, detail="No professors found")
+        return professors
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+    
+@app.get("/get_subjects", response_model=List[Subject])
+async def get_subjects():
+    try:
+        subjects = await subjects_collection.find().to_list(length=100)
+        if not subjects:
+            raise HTTPException(status_code=404, detail="No subjects found")
+        return subjects
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
 #Delete form
 @app.delete("/forms/{form_id}")
