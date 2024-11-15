@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import App from "./App";
 import Login from "./pages/Login";
-import Normal_Request from "./pages/Normal_Request";
+import NormalRequest from "./pages/NormalRequest";
 import BasicTabs from "./components/status";
 import ProfessorDashboard from "./pages/ProfessorDashboard";
 import { ThemeProvider } from "@mui/material/styles";
@@ -18,16 +18,23 @@ import StudentFormDetail from "./pages/StudentFormDetail";
 import { useSelector } from "react-redux";
 import ProtectedStudentLayout from "./method/protectedLayout/ProtectedStudentLayout";
 import ProtectedprofessorLayout from "./method/protectedLayout/ProtectedprofessorLayout";
-
+import Error from "./pages/error";
+import Header from "./components/common/header/Header";
+import AppTest from "./AppTest";
 
 const IsLogin = () => {
   const token = localStorage.getItem('token');
+  const role = localStorage.getItem('role');
   const isLogin = useSelector((state) => state.login.value);
-  console.log('jeang: ' + isLogin);
-  return isLogin || token? <BasicTabs />: <Login />;
+
+  return isLogin || token? (role === 'student' ? <BasicTabs /> : <ProfessorDashboard />): <Login />;
 }
 
 const router = createBrowserRouter([
+  {
+    path: 'test',
+    element: <AppTest/>
+  },
   {
     element: <App />,
     children: [
@@ -41,12 +48,12 @@ const router = createBrowserRouter([
         [
           {
             path: "normal-request",
-            element: <Normal_Request />
+            element: <NormalRequest />
           },
           {
             path: "Detail/:form_id",
             element: < Detail/>
-          }
+          },
         ]
       },
       {
@@ -54,17 +61,17 @@ const router = createBrowserRouter([
         children:
         [
           {
-            path: "/",
-            element: <ProfessorDashboard />
-          },
-          {
             path: "student-form-detail/:form_id",
             element: <StudentFormDetail />,
-          },
+          }
         ]
       },
     ]
   },
+  {
+    path: 'error403',
+    element: <Error/>
+  }
 ]);
 
   ReactDOM.createRoot(document.getElementById("root")).render(

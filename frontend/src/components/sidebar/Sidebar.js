@@ -3,7 +3,7 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { studentItem, professorItem } from './consts/sidebarItem';
@@ -48,8 +48,8 @@ const Sidebar = () => {
       <Box >
         <Divider />
         <List> 
-            <ListItem
-                  button
+            <ListItemButton
+                  
                   onClick={() => {
                     navigate('/');
                   }}
@@ -64,7 +64,7 @@ const Sidebar = () => {
                   sx={styles.text}
                   primary={'สถานะ'}
                 />
-              </ListItem> 
+              </ListItemButton> 
               <Divider/>
             {sidebarItem.map((item, index) => (
               <MyListItem item={item} key={item.id} styles={styles}/>

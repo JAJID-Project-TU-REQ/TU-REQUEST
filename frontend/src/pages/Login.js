@@ -38,7 +38,7 @@ const Login = () => {
       if (data.role === 'student') {
         changeLoginState() // Redirect based on role
       } else {
-        navigate(`/professor-dashboard`); // Redirect based on role
+        changeLoginState(); // Redirect based on role
       }
     } else {
       setError('Invalid username or password');
@@ -53,7 +53,6 @@ const Login = () => {
   return (
     <>
       <Box>
-        // Logo
         <AppBar sx={{ backgroundColor: '#FFFFFF', 
           boxShadow: 'none', 
           borderBottom: '0.5px solid #000' }}>
@@ -72,7 +71,6 @@ const Login = () => {
           </Toolbar>
         </AppBar>
       </Box>
-      // Background
       <Box
         sx={{
           position: 'relative',

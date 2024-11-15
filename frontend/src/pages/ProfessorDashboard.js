@@ -34,7 +34,9 @@ function ProfessorDashboard() {
 
   // Declare a constant 'forms' to store the fetched data
   const forms = fetchedForms || [];
-  console.log(professorUsername);
+  const role = localStorage.getItem('role');
+  console.log(role === 'professor');
+  console.log(localStorage.getItem('token'));
 
   return (
     <div>

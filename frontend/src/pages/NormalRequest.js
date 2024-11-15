@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Typography, Grid, Select, MenuItem, TextField, Container, Button } from '@mui/material';
 import axios from 'axios';
 
-function Normal_Request() {
+function NormalRequest() {
   // Common fields
   const [form_type] = useState('ทั่วไป');
   const [semester_year, setSemesterYear] = useState('');
@@ -174,4 +174,4 @@ function Normal_Request() {
   );
 }
 
-export default Normal_Request;
+export default NormalRequest;

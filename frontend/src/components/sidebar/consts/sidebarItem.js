@@ -102,12 +102,12 @@ export const professorItem = [
             {
                 id: 1,
                 label: 'คำร้องเพิ่มรายวิชา',
-                routes: 'normal-request'
+                routes: ''
             },
             {
                 id: 2,
                 label: 'คำร้องถอนรายวิชา',
-                routes: 'normal-request'
+                routes: ''
             }
         ]
     },

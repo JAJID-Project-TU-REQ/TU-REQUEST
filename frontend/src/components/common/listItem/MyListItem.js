@@ -1,5 +1,5 @@
 import React from 'react'
-import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon'; 
 import ExpandLess from '@mui/icons-material/ExpandLess';
@@ -19,7 +19,7 @@ const MyListItem = (props) => {
     };
   return (
     <Grid2>
-    <ListItem
+    <ListItemButton
         button
         key={item.id}
         onClick={handleToggle}
@@ -35,10 +35,10 @@ const MyListItem = (props) => {
             primary={item.label}
         />
         {open ? <ExpandLess /> : <ExpandMore />}
-    </ListItem>  
+    </ListItemButton>  
     <Collapse in={open}  timeout="auto" unmountOnExit>
         {children.map((child, index) => (
-            <ListItem
+            <ListItemButton
                 button
                 onClick={() => navigate(child.routes)}
                 key={child.id}
@@ -48,7 +48,7 @@ const MyListItem = (props) => {
                     sx={props.styles.childernText}
                     primary={child.label}
                 />
-            </ListItem>
+            </ListItemButton>
         ))}
     </Collapse>
     </Grid2>
