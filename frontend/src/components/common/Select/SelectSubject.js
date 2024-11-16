@@ -9,7 +9,7 @@ const SelectSubject = (props) => {
 
   return (
     <div>
-          <Select variant="outlined" sx={{ width: props.width, height: props.height,borderRadius:5 }}>
+          <Select variant="outlined" onChange={props.onChange} sx={{display:'flex', width: props.width, height: props.height,borderRadius:5,mt:props.mt }}>
           {data.length > 0 ? (
         data.map((subjects) => (
         <MenuItem value={subjects.subject} aria-placeholder="select subject">{subjects.subject}</MenuItem>))

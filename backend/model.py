@@ -46,6 +46,12 @@ class normalForm(BaseFormModel):
     subject: str
     section: str
 
+class transferGradeForm(BaseFormModel):
+    subject1 : str
+    subject2 : str
+    subject3 : str
+    subject4 : str
+
 class PDFModel(BaseModel):
     filename : str
     content_type : str

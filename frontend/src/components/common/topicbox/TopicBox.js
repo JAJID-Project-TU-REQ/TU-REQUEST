@@ -5,8 +5,8 @@ const TopicBox = (props) => {
   return (
     <div>
         <Grid>
-          <Box sx={{display:"flex", width: props.width, flexGrow: 1}}>
-            <Typography variant='h6' sx={{ backgroundColor: "#902923", borderRadius: 4, padding: props.padding, color: '#FFFFFF'}}>
+          <Box sx={{display:"flex", width: props.width}}>
+            <Typography variant='h6' sx={{ mt:props.mt,backgroundColor: "#902923", borderRadius: 4, padding: props.padding, color: '#FFFFFF'}}>
                 {props.text}
             </Typography>
           </Box>

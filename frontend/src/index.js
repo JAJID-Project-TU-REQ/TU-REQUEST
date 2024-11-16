@@ -21,6 +21,7 @@ import ProtectedprofessorLayout from "./method/protectedLayout/Protectedprofesso
 import Error from "./pages/error";
 import Header from "./components/common/header/Header";
 import AppTest from "./AppTest";
+import TransferGrade from "./pages/TransferGrade";
 
 const IsLogin = () => {
   const token = localStorage.getItem('token');
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
           {
             path: "normal-request",
             element: <NormalRequest />
+          },
+          {
+            path:"trasfer-grade",
+            element: <TransferGrade/>,
           },
           {
             path: "Detail/:form_id",

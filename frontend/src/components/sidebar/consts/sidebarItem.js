@@ -13,13 +13,13 @@ export const studentItem = [
         children: [
             {
                 id: 1,
-                label: 'คำร้องเพิ่มรายวิชา',
+                label: 'คำร้องทั่วไป',
                 routes: 'normal-request'
             },
             {
                 id: 2,
-                label: 'คำร้องถอนรายวิชา',
-                routes: 'normal-request'
+                label: 'คำร้องเทียบโอนรายวิชา',
+                routes: 'trasfer-grade'
             }
         ]
     },

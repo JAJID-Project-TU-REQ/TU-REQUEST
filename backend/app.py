@@ -253,6 +253,7 @@ async def get_professor():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
     
+#ดึงข้อมูลรหัสวิชาทั้งหมด
 @app.get("/get_subjects", response_model=List[Subject])
 async def get_subjects():
     try:

@@ -60,15 +60,13 @@ function NormalRequest() {
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission
     FormHandler();
-    alert("ส่งคำร้องสำเร็จ"); // Success alert
   };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 10, mb: 5 }}>
-      {/* Title Section */}
-      <Grid container sx={{ textAlign: 'center', borderBottom: 2, borderColor: 'divider', pb: 4 }}>
+    <Container maxWidth="md" sx={{ mt: 14, mb: 5 }}>
+      <Grid container sx={{ textAlign: 'center', borderBottom: 2, borderColor: 'divider', pb: 4}}>
         <Grid item xs={12}>
-          <Typography variant='h4'>คำร้องทั่วไป</Typography>
+          <Typography variant='h4' sx={{fontWeight: 600}}>คำร้องทั่วไป</Typography>
         </Grid>
       </Grid>
 
