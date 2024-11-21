@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Grid, Select, MenuItem, TextField, Container, Button } from '@mui/material';
 import axios from 'axios';
+import SelectProf from '../components/common/SelectProf/SelectProf';
 
 function NormalRequest() {
   // Common fields
   const [form_type] = useState('ทั่วไป');
   const [semester_year, setSemesterYear] = useState('');
   const [semester, setSemester] = useState('');
-  const [professor, setProf] = useState('');
   const [senderId, setSenderID] = useState('');
   const [status] = useState('pending');
 
@@ -16,8 +16,11 @@ function NormalRequest() {
   const [content, setContent] = useState('');
   const [subject, setSubject] = useState('');
   const [section, setSection] = useState('');
+  const [professor, setProf] = useState('');
+  const [file, setFile] = useState(null);
 
   const form_location = 'http://localhost:8000/forms';
+  const file_upload_location = 'http://localhost:8000/pdf';
 
   useEffect(() => {
     const username = localStorage.getItem('username');
@@ -26,40 +29,69 @@ function NormalRequest() {
     }
   }, []);
 
-  const FormHandler = () => {
+  const approval_chain = [
+    {"professor": "admin", "status": "pending", "approval_order": 1, "comment": null},
+    {"professor": professor, "status": "pending", "approval_order": 2, "comment": null},
+    {"professor": "xmen888", "status": "pending", "approval_order": 3, "comment": null}
+]
+
+  // Handle PDF file upload
+  const handleFileUpload = async () => {
+    if (!file) return null;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await axios.post(file_upload_location, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      alert('เกิดข้อผิดพลาดในการอัปโหลดไฟล์');
+      return null;
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent default form submission
+
+    let uploadedFileData = null;
+    if (file) {
+      uploadedFileData = await handleFileUpload(); // Upload file if it exists
+      if (!uploadedFileData) return; // Stop submission if file upload fails
+    }
+
     const additional_fields = {
       title: title,
       content: content,
       subject: subject,
-      section: section
+      section: section,
+      ...(uploadedFileData && {
+        file_id: uploadedFileData.file_id,
+        file_name: uploadedFileData.filename
+      })
     };
 
-    // Data to be sent to backend, structured for your backend
     const formData = {
       form_type: form_type,
       semester_year: semester_year,
       semester: semester,
-      professor: professor,
       senderId: senderId,
       status: status,
+      approval_chain: approval_chain,
       additional_fields: additional_fields
     };
 
-    // Post request to the backend
-    axios.post(form_location, formData)
-    .then(res => {
-      console.log("Form submitted successfully:", res);
-      alert("ส่งคำร้องสำเร็จ"); // Success alert
-    })
-    .catch(err => {
-      console.error("Error posting form data:", err);
+    try {
+      const response = await axios.post(form_location, formData);
+      console.log("Form submitted successfully:", response);
+      alert("ส่งคำร้องสำเร็จ");
+    } catch (error) {
+      console.error("Error submitting form:", error);
       alert("เกิดข้อผิดพลาดในการส่งคำร้อง");
-    });
-};
-
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission
-    FormHandler();
+    }
   };
 
   return (
@@ -86,12 +118,12 @@ function NormalRequest() {
             <Typography variant='h6' sx={{ mr: 2, backgroundColor: "#902923", borderRadius: '8px', padding: '8px 18px', color: '#FFFFFF' }}>
               ปีการศึกษา
             </Typography>
-            <TextField id="semester_year" label="กรอกปีการศึกษา" variant="outlined" onChange={event => setSemesterYear(event.target.value)} sx={{ ml: 2, flexGrow: 1 }} />
+            <TextField id="semester_year" label="กรอกปีการศึกษา" variant="outlined" onChange={event => setSemesterYear(event.target.value)} sx={{ borderRadius:5,ml: 2, flexGrow: 1 }} />
 
-            <Typography variant='h6' sx={{ ml: 4, mr: 2, backgroundColor: "#902923", borderRadius: '8px', padding: '8px 18px', color: '#FFFFFF' }}>
+            <Typography variant='h6' sx={{ borderRadius:5,ml: 4, mr: 2, backgroundColor: "#902923", borderRadius: '8px', padding: '8px 18px', color: '#FFFFFF' }}>
               ภาคการศึกษา
             </Typography>
-            <Select id="semester" name="semester" variant="outlined" onChange={event => setSemester(event.target.value)} sx={{ width: '150px', height: '50px' }}>
+            <Select id="semester" name="semester" variant="outlined" onChange={event => setSemester(event.target.value)} sx={{ borderRadius:5,width: '150px', height: '50px' }}>
               <MenuItem value="1">1</MenuItem>
               <MenuItem value="2">2</MenuItem>
               <MenuItem value="summer">summer</MenuItem>
@@ -105,7 +137,7 @@ function NormalRequest() {
             <Typography variant='h6' sx={{ mr: 2, backgroundColor: "#902923", borderRadius: '8px', padding: '8px 18px', color: '#FFFFFF' }}>
               หัวข้อคำร้อง
             </Typography>
-            <TextField id="title" label="กรอกหัวข้อคำร้อง" variant="outlined" onChange={event => setTitle(event.target.value)} fullWidth sx={{ ml: 2 }} />
+            <TextField id="title" label="กรอกหัวข้อคำร้อง" variant="outlined" onChange={event => setTitle(event.target.value)} fullWidth sx={{ borderRadius:5,ml: 2 }} />
           </Box>
         </Grid>
 
@@ -123,7 +155,7 @@ function NormalRequest() {
               multiline
               rows={4}
               fullWidth
-              sx={{ ml: 2 }}
+              sx={{ borderRadius:5,ml: 2 }}
             />
           </Box>
         </Grid>
@@ -134,12 +166,7 @@ function NormalRequest() {
             <Typography variant='h6' sx={{ mr: 2, backgroundColor: "#902923", borderRadius: '8px', padding: '8px 18px', color: '#FFFFFF' }}>
               อาจารย์ผู้สอน
             </Typography>
-            <Select id="professor" name="professor" variant="outlined" onChange={event => setProf(event.target.value)} sx={{ width: '300px', height: '50px' }}>
-              <MenuItem value="somchai">สมชาย</MenuItem>
-              <MenuItem value="sommhai">สมหมาย</MenuItem>
-              <MenuItem value="somkit">สมคิด</MenuItem>
-              <MenuItem value="patiphan">ปฏิภาณ เพ็งเภา</MenuItem>
-            </Select>
+            <SelectProf onChange={event => setProf(event.target.value)}/>
           </Box>
         </Grid>
 
@@ -149,7 +176,7 @@ function NormalRequest() {
             <Typography variant='h6' sx={{ mr: 2, backgroundColor: "#902923", borderRadius: '8px', padding: '8px 18px', color: '#FFFFFF' }}>
               รหัสวิชา
             </Typography>
-            <Select id="subject" name="subject" variant="outlined" onChange={event => setSubject(event.target.value)} sx={{ width: '150px', height: '50px' }}>
+            <Select id="subject" name="subject" variant="outlined" onChange={event => setSubject(event.target.value)} sx={{ borderRadius:5,width: '150px', height: '50px' }}>
               <MenuItem value="CN101">CN101</MenuItem>
               <MenuItem value="SF221">SF221</MenuItem>
               <MenuItem value="SF212">SF212</MenuItem>
@@ -158,8 +185,18 @@ function NormalRequest() {
             <Typography variant='h6' sx={{ ml: 4, mr: 2, backgroundColor: "#902923", borderRadius: '8px', padding: '8px 18px', color: '#FFFFFF' }}>
               กลุ่มเรียนที่ศึกษา
             </Typography>
-            <TextField id="section" label="กรอกรหัสวิชา" variant="outlined" onChange={event => setSection(event.target.value)} sx={{ ml: 2, flexGrow: 1 }} />
+            <TextField id="section" label="กรอกรหัสวิชา" variant="outlined" onChange={event => setSection(event.target.value)} sx={{ borderRadius:5,ml: 2, flexGrow: 1 }} />
           </Box>
+        </Grid>
+        
+        {/* File Upload */}
+        <Grid item xs={12} sx={{ mt: 3 }}>
+          <Typography variant="h6">แนบไฟล์ PDF (ถ้ามี)</Typography>
+          <input
+            type="file"
+            accept="application/pdf"
+            onChange={(e) => setFile(e.target.files[0])}
+          />
         </Grid>
 
         {/* Submit Button */}

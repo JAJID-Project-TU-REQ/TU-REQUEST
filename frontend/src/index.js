@@ -7,7 +7,7 @@ import {
 import App from "./App";
 import Login from "./pages/Login";
 import NormalRequest from "./pages/NormalRequest";
-import BasicTabs from "./components/status";
+import BasicTabs from "./pages/StudentDashboard";
 import ProfessorDashboard from "./pages/ProfessorDashboard";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
@@ -56,7 +56,7 @@ const router = createBrowserRouter([
             element: <TransferGrade/>,
           },
           {
-            path: "Detail/:form_id",
+            path: "student-detail/:form_id",
             element: < Detail/>
           },
         ]
@@ -66,8 +66,8 @@ const router = createBrowserRouter([
         children:
         [
           {
-            path: "student-form-detail/:form_id",
-            element: <StudentFormDetail />,
+            path: "professor-detail/:form_id",
+            element: <Detail />,
           }
         ]
       },

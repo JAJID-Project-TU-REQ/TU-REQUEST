@@ -6,10 +6,9 @@ import ArticleIcon from "@mui/icons-material/Article";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { Grid2,Container,Paper,Table,TableContainer,TableHead,TableRow,TableCell,TableBody,ButtonGroup,Button } from "@mui/material";
-import Footer from "./footer";
+import Footer from "../components/footer";
 import { Link } from "react-router-dom";
 import StudentForms from "../method/StudentForms";
-import StudentFormDetail from "../pages/StudentFormDetail";
 
 
 function CustomTabPanel(props) {
@@ -110,13 +109,13 @@ export default function BasicTabs() {
                       <TableCell align="center" sx={{ py: 0.5,width:"100%" }}>{form.form_type}</TableCell>
                       <TableCell align="center" sx={{ py: 0.5,width:"100%" }}>{form.additional_fields.title}</TableCell>
                       <TableCell align="center" sx={{ py: 0.5,width:"100%" }}>
-                        <Button component={Link} to={`Detail/${form.form_id}`} >รายละเอียด</Button>
+                        <Button component={Link} to={`student-detail/${form.form_id}`} >รายละเอียด</Button>
                       </TableCell>
                     </TableRow>
                ))
               ) : (
                 <TableRow sx={{display: 'flex', width: '100%'}}>
-                  <TableCell align="" sx={{ py: 0.5, flexGrow: 1 }}>No forms found for this professor.</TableCell>
+                  <TableCell align="" sx={{ py: 0.5, flexGrow: 1 }}>No forms found for this student.</TableCell>
                 </TableRow>
               )}
             </TableBody>

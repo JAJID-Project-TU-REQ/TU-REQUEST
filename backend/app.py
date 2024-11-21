@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, File, UploadFile, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorGridFSBucket
 from bson.objectid import ObjectId
 from fastapi_login import LoginManager
@@ -12,7 +12,7 @@ from datetime import datetime
 #App object
 app = FastAPI()
 
-from model import Users, BaseFormModel, ProfessorApproval, ApprovalStatus, Subject
+from model import Users, BaseFormModel, ApprovalStatus, Subject
 
 origins = ["http://localhost:3000"] # Replace with your frontend URL
 
@@ -55,11 +55,18 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     # Include role in the response token
     access_token = manager.create_access_token(data={"sub": form_data.username, "role": user["role"]})
     return {"access_token": access_token, 
-            "role": user["role"], 
             "token_type": "bearer", 
+            "username": user["username"],
             "name_th": user["name_th"],
             "name_en": user["name_en"],
-            "username": user["username"]
+            "role": user["role"], 
+            "email": user["email"],
+            "advisor": user["advisor"],
+            "faculty_en": user["faculty_en"],
+            "major_en": user["major_en"],
+            "faculty_th": user["faculty_th"],
+            "major_th": user["major_th"],
+            "room": user["room"]
             }
 
 # Register Endpoint
@@ -76,8 +83,11 @@ async def register(user: Users):
         "name_en": user.name_en,
         "name_th": user.name_th,
         "email": user.email,
-        "faculty": user.faculty,
-        "major": user.major,
+        "advisor": user.advisor,
+        "faculty_en": user.faculty_en,
+        "major_en": user.major_en,
+        "faculty_th": user.faculty_th,
+        "major_th": user.major_th,
         "room": user.room
     }
     await users_collection.insert_one(new_user)
@@ -92,16 +102,6 @@ async def submit_form(form_data: BaseFormModel):
     # Set the current date if it's missing
     if 'date' not in form_data_dict:
         form_data_dict['date'] = datetime.utcnow().strftime('%Y-%m-%d')  # Set current date if missing
-
-    # Initialize the approval chain with professors in the correct order
-    approval_chain = [
-        {"professor": "admin", "status": ApprovalStatus.pending, "approval_order": 1, "comment": None},
-        {"professor": form_data.professor, "status": ApprovalStatus.pending, "approval_order": 2, "comment": None},
-        {"professor": "xmen888", "status": ApprovalStatus.pending, "approval_order": 3, "comment": None}
-    ]
-    
-    # Add the approval chain to the form data
-    form_data_dict["approval_chain"] = approval_chain
 
     # Store the form in MongoDB
     result = await forms_collection.insert_one(form_data_dict)
@@ -276,28 +276,53 @@ async def delete_form(form_id):
 
 #ฝั่งการอัปโหลดไฟล์ PDF
 
-#Create/Upload PDF
+#Post method for PDF File
 @app.post("/pdf")
-async def upload_pdf(file: UploadFile = File(...)):
+async def uploadpdf(file: UploadFile = File(...)):
+    # ตรวจสอบว่าไฟล์เป็น PDF
     if file.content_type != "application/pdf":
         raise HTTPException(status_code=400, detail="File type must be PDF")
 
-    # อ่านข้อมูลไฟล์ PDF
+    # อ่านข้อมูลไฟล์
     file_content = await file.read()
 
-    # บันทึกไฟล์ลง GridFS แบบ asynchronous
-    pdf_id = await fs_bucket.upload_from_stream(file.filename, file_content)
+    # ตรวจสอบชื่อไฟล์ซ้ำใน GridFS
+    cursor = fs_bucket.find({"filename": file.filename})  # ได้ Cursor
+    existing_files = await cursor.to_list(length=1)  # ดึงไฟล์แรกออกมา
+    if existing_files:
+        # ถ้าชื่อไฟล์ซ้ำ ให้เพิ่ม timestamp ต่อท้าย
+        from datetime import datetime
+        timestamp = datetime.utcnow().strftime("%Y%m%d%H%M%S")
+        unique_filename = f"{file.filename.rsplit('.', 1)[0]}{timestamp}.pdf"
+    else:
+        unique_filename = file.filename
 
-    return JSONResponse(content={"file_id": str(pdf_id)})
+    # บันทึกไฟล์ลง GridFS
+    try:
+        pdf_id = await fs_bucket.upload_from_stream(unique_filename, file_content)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to upload file: {str(e)}")
 
-#Read PDF
-@app.get("/pdf/")
-async def list_pdfs():
-    files = []
-    async for file in fs_bucket.find():
-        files.append({
-            "filename": file.filename,
-            "file_id": str(file._id),
-            "content_type": file.content_type
-        })
-    return JSONResponse(content=files)
+    return JSONResponse(content={"file_id": str(pdf_id),
+                                "filename": unique_filename,
+                                })
+
+#Get method for PDF File query by file_id
+@app.get("/pdf/{file_id}")
+async def get_pdf(file_id: str):
+    # ตรวจสอบว่า _id เป็น ObjectId ที่ถูกต้องหรือไม่
+    try:
+        file_object_id = ObjectId(file_id)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail="Invalid file ID format")
+
+    # ดึงไฟล์จาก GridFS
+    try:
+        grid_out = await fs_bucket.open_download_stream(file_object_id)
+    except Exception as e:
+        raise HTTPException(status_code=404, detail="File not found")
+
+    # ส่งคืนไฟล์ PDF
+    return StreamingResponse(grid_out, media_type="application/pdf", headers={
+        "Content-Disposition": f"inline; filename={grid_out.filename}"
+    })

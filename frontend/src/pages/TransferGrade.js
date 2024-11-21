@@ -17,7 +17,6 @@ function TransferGrade() {
     const [form_type] = useState('เทียบโอนรายวิชา');
     const [semester_year, setSemesterYear] = useState('');
     const [semester, setSemester] = useState('');
-    const [professor] = useState('-');
     const [senderId, setSenderID] = useState('');
     const [status] = useState('pending');
 
@@ -52,7 +51,6 @@ function TransferGrade() {
         form_type: form_type,
         semester_year: semester_year,
         semester: semester,
-        professor: professor,
         senderId: senderId,
         status: status,
         additional_fields: additional_fields

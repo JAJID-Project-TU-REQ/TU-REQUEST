@@ -10,8 +10,11 @@ class Users(BaseModel):
     name_en : str
     name_th : str
     email : str
-    faculty : str
-    major : str
+    advisor : str
+    faculty_en : str
+    major_en : str
+    faculty_th : str
+    major_th : str
     room : str
 
 class Subject(BaseModel):
@@ -33,7 +36,6 @@ class BaseFormModel(BaseModel):
     form_type: str
     semester_year: str
     semester: str
-    professor: str
     senderId: str
     status: ApprovalStatus = ApprovalStatus.pending
     approval_chain: List[ProfessorApproval] = []  # List of professors who need to approve

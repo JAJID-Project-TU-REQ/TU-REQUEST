@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Paper, Typography, Grid, Button, Box, Toolbar} from "@mui/material";
+import { Container, Paper, Typography, Grid, Button, Box, Toolbar } from "@mui/material";
 import { useParams } from "react-router-dom";
 import FormDetails from "../method/formDetails";
 const getRole = () => {
@@ -8,11 +8,11 @@ const getRole = () => {
 
 
 
-export default function StudentFormDetail () {
+export default function StudentFormDetail() {
   const Role = getRole();
 
   const { form_id } = useParams(); // Extract the formId from the URL
-  const { form, loading, error } = FormDetails(form_id); 
+  const { form, loading, error } = FormDetails(form_id);
 
   console.log("Form ID from URL:", form_id); // Check if formId is being retrieved
   console.log("Form Details:", form); // Check if form is being retrieved
@@ -20,6 +20,11 @@ export default function StudentFormDetail () {
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
+
+  const handleViewPDF = (file_id) => {
+    // This function would open the PDF in a new window or direct to a specific route
+    window.open(`http://localhost:8000/pdf/${file_id}`, "_blank");
+  };
 
   return (
     <>
@@ -61,9 +66,9 @@ export default function StudentFormDetail () {
           >
             <Box display={"flex"}>
               <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-              หัวข้อคำร้อง:
+                หัวข้อคำร้อง:
               </Typography>
-              <Typography variant="h6" sx={{ ml:1, fontWeight: "bold" }}>
+              <Typography variant="h6" sx={{ ml: 1, fontWeight: "bold" }}>
                 {form.additional_fields.title}
               </Typography>
             </Box>
@@ -114,22 +119,22 @@ export default function StudentFormDetail () {
               <Typography variant="subtitle2" fontWeight="bold" gutterBottom sx={{ fontSize: "1.1rem" }}>
                 ประเภทคำร้อง :
               </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ml:1, fontSize: "1.1rem" }}>
+              <Typography variant="body2" color="text.secondary" sx={{ ml: 1, fontSize: "1.1rem" }}>
                 {form.form_type}
               </Typography>
             </Box>
 
             <Box display={"flex"}>
-              <Box sx={{width:"15%",mr:0}}>
+              <Box sx={{ width: "15%", mr: 0 }}>
                 <Typography variant="subtitle2" fontWeight="bold" gutterBottom sx={{ fontSize: "1.1rem" }}>
                   คำอธิบายประกอบ :
                 </Typography>
               </Box>
-              <Box sx={{ml:0,width:"88%"}}>
+              <Box sx={{ ml: 0, width: "88%" }}>
                 <Typography
                   variant="body2"
                   color="text.secondary"
-                  sx={{ whiteSpace: "pre-line" ,fontSize: '1.1rem'}}
+                  sx={{ whiteSpace: "pre-line", fontSize: '1.1rem' }}
                 >
                   {form.additional_fields.content}
                 </Typography>
@@ -140,61 +145,62 @@ export default function StudentFormDetail () {
               <Typography variant="subtitle2" fontWeight="bold" gutterBottom sx={{ fontSize: "1.1rem" }}>
                 ไฟล์แนบประกอบ :
               </Typography>
-              <Box sx={{ml:3, display: "flex", alignItems: "start", gap: 1 }}>
-                <Typography variant="body2" color="text.secondary" sx={{fontSize: '1.2rem'}}>
-                  file.pdf
+              <Box sx={{ ml: 3, display: "flex", alignItems: "start", gap: 1 }}>
+                <Typography variant="body2" color="text.secondary" sx={{ fontSize: '1.2rem' }}>
+                  {form.additional_fields.file_name}
                 </Typography>
                 <Button
                   variant="text"
                   size="small"
-                  sx={{ color: "primary.main", textTransform: "none",fontSize: '1.1rem',alignContent:"center" }}
+                  sx={{ color: "primary.main", textTransform: "none", fontSize: '1.1rem', alignContent: "center" }}
+                  onClick={() => handleViewPDF(form.additional_fields.file_id)}
                 >
-                    (VIEW PDF)
+                  (VIEW PDF)
                 </Button>
               </Box>
             </Box>
             {Role === 'professor' && (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: 2,
-                mt: 2,
-              }}
-            >
-              <Button
+              <Box
                 sx={{
-                  borderRadius: "42px",
-                  boxShadow: "none",
-                  px: 2,
-                  py: 1,
                   display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  justifyContent: "flex-end",
+                  gap: 2,
+                  mt: 2,
                 }}
-                variant="contained"
-                color="error"
               >
-                ไม่อนุมัติ
-              </Button>
-              <Button
-                sx={{
-                  borderRadius: "42px",
-                  boxShadow: "none",
-                  px: 2,
-                  py: 1,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-                variant="contained"
-                color="success"
-              >
-                อนุมัติ
-              </Button>
-            </Box>
+                <Button
+                  sx={{
+                    borderRadius: "42px",
+                    boxShadow: "none",
+                    px: 2,
+                    py: 1,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                  variant="contained"
+                  color="error"
+                >
+                  ไม่อนุมัติ
+                </Button>
+                <Button
+                  sx={{
+                    borderRadius: "42px",
+                    boxShadow: "none",
+                    px: 2,
+                    py: 1,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                  variant="contained"
+                  color="success"
+                >
+                  อนุมัติ
+                </Button>
+              </Box>
             )}
-        </Box>
+          </Box>
         </Paper>
       </Container>
     </>

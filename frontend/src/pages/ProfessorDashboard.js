@@ -69,7 +69,7 @@ function ProfessorDashboard() {
                       <TableCell align="center" sx={{ py: 0.5 }}>{form.additional_fields.title}</TableCell>
                       <TableCell align="center" sx={{ py: 0.5 }}>
                         <ButtonGroup color="primary" aria-label="outlined primary button group">
-                          <Button component={Link} to={`/main/professor-dashboard/form-detail/${form.form_id}`} >รายละเอียด</Button>
+                          <Button component={Link} to={`professor-detail/${form.form_id}`} >รายละเอียด</Button>
                         </ButtonGroup>
                       </TableCell>
                     </TableRow>
@@ -112,7 +112,7 @@ function ProfessorDashboard() {
                       <TableCell align="center" sx={{ py: 0.5 }}>{form.additional_fields.title}</TableCell>
                       <TableCell align="center" sx={{ py: 0.5 }}>
                         <ButtonGroup color="primary" aria-label="outlined primary button group">
-                          <Button component={Link} to={`/main/professor-dashboard/form-detail/${form.form_id}`} >รายละเอียด</Button>
+                          <Button component={Link} to={`professor-detail/${form.form_id}`} >รายละเอียด</Button>
                         </ButtonGroup>
                       </TableCell>
                     </TableRow>

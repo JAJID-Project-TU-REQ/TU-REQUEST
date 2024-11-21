@@ -7,6 +7,7 @@ import { toggle } from '../../redux/toggleSlice';
 import logo from '../../assets/images/logo.png';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -15,6 +16,7 @@ const Navbar = () => {
   const full_name = localStorage.getItem('name_th');
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -27,6 +29,7 @@ const Navbar = () => {
   };
   const handleLogout = () => {
     localStorage.clear();
+    navigate('/');
     window.location.reload();
   };
 
