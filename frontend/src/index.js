@@ -22,6 +22,7 @@ import Error from "./pages/error";
 import Header from "./components/common/header/Header";
 import AppTest from "./AppTest";
 import TransferGrade from "./pages/TransferGrade";
+import ExemptionTU from "./pages/ExemptionTU";
 
 const IsLogin = () => {
   const token = localStorage.getItem('token');
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
             path: "student-detail/:form_id",
             element: < Detail/>
           },
+          {
+            path: "exemption-tu",
+            element: <ExemptionTU/>
+          }
         ]
       },
       {
