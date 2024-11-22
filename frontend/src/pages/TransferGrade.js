@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Header from "../components/common/header/Header";
-import SubHeader from "../components/common/subheader/SubHeader";
 import TopicBox from "../components/common/topicbox/TopicBox";
-import SelectSemester from "../components/common/selectsemester/SelectSemester";
 import SelectSubject from "../components/common/Select/SelectSubject";
-import TextInput from "../components/common/textinput/TextInput";
 import SubmitButton from "../components/common/submitbutton/SubmitButton";
-import { Box, Toolbar } from "@mui/material";
+import { Box } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {

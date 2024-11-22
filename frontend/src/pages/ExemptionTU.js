@@ -93,9 +93,9 @@ function ExemptionTU() {
       >
         <Grid item xs={12}>
           <Typography variant="h4" sx={{ fontWeight: 600 }}>
-            คำร้องเทียบโอนรายวิชา
+            คำร้องยื่นผลขอยกเว้นรายวิชา TU
           </Typography>
-          <Typography variant="h5">รูปแบบเทียบโอนจากมหาวิทยาลัยอื่น</Typography>
+          <Typography variant="h5">กลุ่มวิชาพื้นฐานมหาวิทยาลัยธรรมศาสตร์ (วิชา TU)</Typography>
         </Grid>
       </Grid>
 
