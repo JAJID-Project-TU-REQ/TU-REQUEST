@@ -146,7 +146,7 @@ export const studentItem = [
             {
                  id: 1,
                  label: 'คำร้องเทียบโอนรายวิชา (มหาวิทยาลัยอื่น)',
-                 routes: 'normal-request'
+                 routes: 'transfer-grade'
                },
                {
                  id: 2,

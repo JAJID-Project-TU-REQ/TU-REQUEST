@@ -52,7 +52,7 @@ const router = createBrowserRouter([
             element: <NormalRequest />
           },
           {
-            path:"trasfer-grade",
+            path:"transfer-grade",
             element: <TransferGrade/>,
           },
           {
