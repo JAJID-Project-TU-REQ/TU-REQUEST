@@ -12,6 +12,7 @@ import {
   TextField,
   Select,
   MenuItem,
+  Divider,
 } from "@mui/material";
 
 function TransferGrade() {
@@ -104,19 +105,21 @@ function TransferGrade() {
           </Typography>
         </Grid>
       </Grid>
+
       {/* Semester Placing */}
       <Box>
         <Grid container spacing={3}>
           <Grid item xs={12}>
+            <Typography variant="h6" sx={{ fontWeight: "bold" }}> เลือกปีการศึกษา</Typography>
             <Box display="flex" alignItems="center">
               <Typography
                 variant="h6"
                 sx={{
                   mr: 2,
                   backgroundColor: "#902923",
-                  borderRadius: "8px",
-                  padding: "8px 18px",
+                  padding: "8px 30px",
                   color: "#FFFFFF",
+                  borderRadius: "8px",
                 }}
               >
                 ปีการศึกษา
@@ -126,13 +129,11 @@ function TransferGrade() {
                 label="กรอกปีการศึกษา"
                 variant="outlined"
                 onChange={(event) => setSemesterYear(event.target.value)}
-                sx={{ borderRadius: 5, ml: 2, flexGrow: 1 }}
+                sx={{ borderRadius: 8, ml: 2, flexGrow: 1 }}
               />
-
               <Typography
                 variant="h6"
                 sx={{
-                  borderRadius: 5,
                   ml: 4,
                   mr: 2,
                   backgroundColor: "#902923",
@@ -156,7 +157,200 @@ function TransferGrade() {
               </Select>
             </Box>
           </Grid>
+
+            <Grid item xs={12}>
+            <Box sx={{ mt: 1, mb: 1 }}>
+              <Divider />
+            </Box>
+            </Grid>
+          <Grid container spacing={4} sx={{ mt: 1 , borderRadius: 8}}>
           <Grid item xs={12}>
+          <Typography variant="h6" sx={{ mt:1,fontWeight: "bold" }}> ข้อมูลวิชาจากมหาวิทยาลัยเดิม</Typography>
+            <Box display="flex" alignItems="center">
+              <Typography
+                variant="h6"
+                sx={{
+                  mr: 2,
+                  backgroundColor: "#902923",
+                  borderRadius: "8px",
+                  padding: "8px 18px",
+                  color: "#FFFFFF",
+                }}
+              >
+                ชื่อมหาวิทยาลัยเดิม
+              </Typography>
+              <TextField
+                id="old_university"
+                label="กรอกชื่อมหาวิทยาลัยเดิม"
+                variant="outlined"
+                onChange={(event) => setSemesterYear(event.target.value)}
+                sx={{ borderRadius: 5, ml: 2, flexGrow: 1 }}
+              />
+                          </Box>
+
+              <Box sx={{mb:1 , mt:1}} display="flex" alignItems="center">
+              <Typography
+                variant="h6"
+                sx={{
+                  mr: 2,
+                  backgroundColor: "#902923",
+                  borderRadius: "8px",
+                  padding: "8px 18px",
+                  color: "#FFFFFF",
+                }}
+              >
+                รหัสวิชา
+              </Typography>
+              <TextField
+                id="oldUniSubjectID"
+                label="รหัสวิชา"
+                variant="outlined"
+                onChange={(event) => setSemesterYear(event.target.value)}
+                sx={{ borderRadius: 5, ml: 2, mr:2, flexGrow: 1 }}
+              />
+                          <Typography
+                variant="h6"
+                sx={{
+                  mr: 2,
+                  backgroundColor: "#902923",
+                  borderRadius: "8px",
+                  padding: "8px 18px",
+                  color: "#FFFFFF",
+                }}
+              >
+                ชื่อวิชาที่ต้องการเทียบโอน
+              </Typography>
+              <TextField
+                id="oldUniSubjectName"
+                label="ชื่อวิชา"
+                variant="outlined"
+                onChange={(event) => setSemesterYear(event.target.value)}
+                sx={{ borderRadius: 5, ml: 2, flexGrow: 1 }}
+              />
+                          </Box>
+                          <Box sx={{mb:1 , mt:1}} display="flex" alignItems="center">
+              <Typography
+                variant="h6"
+                sx={{
+                  mr: 2,
+                  backgroundColor: "#902923",
+                  borderRadius: "8px",
+                  padding: "8px 18px",
+                  color: "#FFFFFF",
+                }}
+              >
+                รหัสวิชา
+              </Typography>
+              <TextField
+                id="oldUniSubjectID"
+                label="รหัสวิชา"
+                variant="outlined"
+                onChange={(event) => setSemesterYear(event.target.value)}
+                sx={{ borderRadius: 5, ml: 2, mr:2, flexGrow: 1 }}
+              />
+                          <Typography
+                variant="h6"
+                sx={{
+                  mr: 2,
+                  backgroundColor: "#902923",
+                  borderRadius: "8px",
+                  padding: "8px 18px",
+                  color: "#FFFFFF",
+                }}
+              >
+                ชื่อวิชาที่ต้องการเทียบโอน
+              </Typography>
+              <TextField
+                id="oldUniSubjectName"
+                label="ชื่อวิชา"
+                variant="outlined"
+                onChange={(event) => setSemesterYear(event.target.value)}
+                sx={{ borderRadius: 5, ml: 2, flexGrow: 1 }}
+              />
+                          </Box>
+                          <Box sx={{mb:1 , mt:1}} display="flex" alignItems="center">
+              <Typography
+                variant="h6"
+                sx={{
+                  mr: 2,
+                  backgroundColor: "#902923",
+                  borderRadius: "8px",
+                  padding: "8px 18px",
+                  color: "#FFFFFF",
+                }}
+              >
+                รหัสวิชา
+              </Typography>
+              <TextField
+                id="oldUniSubjectID"
+                label="รหัสวิชา"
+                variant="outlined"
+                onChange={(event) => setSemesterYear(event.target.value)}
+                sx={{ borderRadius: 5, ml: 2, mr:2, flexGrow: 1 }}
+              />
+                          <Typography
+                variant="h6"
+                sx={{
+                  mr: 2,
+                  backgroundColor: "#902923",
+                  borderRadius: "8px",
+                  padding: "8px 18px",
+                  color: "#FFFFFF",
+                }}
+              >
+                ชื่อวิชาที่ต้องการเทียบโอน
+              </Typography>
+              <TextField
+                id="oldUniSubjectName"
+                label="ชื่อวิชา"
+                variant="outlined"
+                onChange={(event) => setSemesterYear(event.target.value)}
+                sx={{ borderRadius: 5, ml: 2, flexGrow: 1 }}
+              />
+                          </Box>
+                          <Box sx={{mb:1 , mt:1}} display="flex" alignItems="center">
+              <Typography
+                variant="h6"
+                sx={{
+                  mr: 2,
+                  backgroundColor: "#902923",
+                  borderRadius: "8px",
+                  padding: "8px 18px",
+                  color: "#FFFFFF",
+                }}
+              >
+                รหัสวิชา
+              </Typography>
+              <TextField
+                id="oldUniSubjectID"
+                label="รหัสวิชา"
+                variant="outlined"
+                onChange={(event) => setSemesterYear(event.target.value)}
+                sx={{ borderRadius: 5, ml: 2, mr:2, flexGrow: 1 }}
+              />
+                          <Typography
+                variant="h6"
+                sx={{
+                  mr: 2,
+                  backgroundColor: "#902923",
+                  borderRadius: "8px",
+                  padding: "8px 18px",
+                  color: "#FFFFFF",
+                }}
+              >
+                ชื่อวิชาที่ต้องการเทียบโอน
+              </Typography>
+              <TextField
+                id="oldUniSubjectName"
+                label="ชื่อวิชา"
+                variant="outlined"
+                onChange={(event) => setSemesterYear(event.target.value)}
+                sx={{ borderRadius: 5, ml: 2, flexGrow: 1 }}
+              />
+                          </Box>
+                          </Grid>
+          <Grid item xs={12}>
+          <Typography variant="h6" sx={{ fontWeight: "bold" }}> รายวิชาที่ต้องการเทียบโอน (มหาวิทยาลัยธรรมศาสตร์) </Typography>
             <Box sx={{ mt: 1, display: "flex", justifyContent: "start" }}>
               <Box sx={{ mr: 3 }}>
                 <TopicBox text="รหัสวิชา" padding="8px 17px" />
@@ -238,6 +432,7 @@ function TransferGrade() {
               <SubmitButton onClick={handleSubmit} />
             </Box>
           </Grid>
+        </Grid>
         </Grid>
       </Box>
     </Container>

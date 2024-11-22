@@ -161,7 +161,7 @@ export const studentItem = [
             {
                 id: 4,
                 label: 'คำร้องเทียบโอนรายวิชาทั่วไป (วิชาภาษาอังกฤษ)',
-                routes: 'normal-request'
+                routes: 'exemption-el'
             }
          ]
     }
