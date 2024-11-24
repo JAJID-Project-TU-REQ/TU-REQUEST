@@ -1,9 +1,9 @@
 import React from 'react'
-import TransferGrade from './pages/TransferGrade'
+import Quit from './pages/Quit'
 
 const AppTest = () => {
   return (
-    <TransferGrade/>
+    <Quit/>
   )
 }
 

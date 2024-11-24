@@ -8,14 +8,14 @@ const SelectSubject = (props) => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div>
-          <Select variant="outlined" onChange={props.onChange} sx={{display:'flex', width: props.width, height: props.height,borderRadius:5,mt:props.mt }}>
+    
+        <Select variant="outlined" onChange={props.onChange} sx={{display:'flex', height: props.height,borderRadius:5,mt:props.mt, flexGrow: props.flexGrow }}>
           {data.length > 0 ? (
         data.map((subjects) => (
         <MenuItem value={subjects.subject} aria-placeholder="select subject">{subjects.subject}</MenuItem>))
     ) : (null)}
           </Select>
-    </div>
+   
   )
 }
 

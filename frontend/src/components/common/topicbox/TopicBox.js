@@ -3,15 +3,11 @@ import { Grid, Typography, Box } from '@mui/material'
 
 const TopicBox = (props) => {
   return (
-    <div>
-        <Grid>
-          <Box sx={{display:"flex", width: props.width}}>
-            <Typography variant='h6' sx={{ mt:props.mt,backgroundColor: "#902923", borderRadius: 4, padding: props.padding, color: '#FFFFFF'}}>
-                {props.text}
-            </Typography>
+          <Box sx={{display:"flex", alignItems: 'center', backgroundColor: "#902923", borderRadius: 4, padding: props.padding, color: '#FFFFFF', mr: 2}}>
+          <Typography sx={{fontSize: '20px'}}>
+           {props.text}
+           </Typography>
           </Box>
-        </Grid>
-    </div>
   )
 }
 

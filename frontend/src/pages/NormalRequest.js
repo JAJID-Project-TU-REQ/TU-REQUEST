@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Grid, Select, MenuItem, TextField, Container, Button } from '@mui/material';
 import axios from 'axios';
-import SelectProf from '../components/common/SelectProf/SelectProf';
+import SelectProf from '../components/common/Select/SelectProf';
 
 function NormalRequest() {
   // Common fields
@@ -9,6 +9,7 @@ function NormalRequest() {
   const [semester_year, setSemesterYear] = useState('');
   const [semester, setSemester] = useState('');
   const [senderId, setSenderID] = useState('');
+  const [sender_advisor, setSenderAdvisor] = useState('');
   const [status] = useState('pending');
 
   // Additional fields
@@ -24,8 +25,12 @@ function NormalRequest() {
 
   useEffect(() => {
     const username = localStorage.getItem('username');
+    const advisor = localStorage.getItem('advisor');
     if (username) {
       setSenderID(username);
+    }
+    if (advisor) {
+      setSenderAdvisor(advisor);
     }
   }, []);
 
@@ -62,16 +67,22 @@ function NormalRequest() {
       uploadedFileData = await handleFileUpload(); // Upload file if it exists
       if (!uploadedFileData) return; // Stop submission if file upload fails
     }
+    
+    const files = [
+      {
+        ...(uploadedFileData && {
+          file_id: uploadedFileData.file_id,
+          file_name: uploadedFileData.filename
+        })
+      }
+    ]
 
     const additional_fields = {
       title: title,
       content: content,
       subject: subject,
       section: section,
-      ...(uploadedFileData && {
-        file_id: uploadedFileData.file_id,
-        file_name: uploadedFileData.filename
-      })
+      file : files
     };
 
     const formData = {
@@ -79,6 +90,7 @@ function NormalRequest() {
       semester_year: semester_year,
       semester: semester,
       senderId: senderId,
+      sender_advisor: sender_advisor,
       status: status,
       approval_chain: approval_chain,
       additional_fields: additional_fields
