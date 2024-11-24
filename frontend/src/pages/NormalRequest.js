@@ -203,7 +203,7 @@ function NormalRequest() {
         
         {/* File Upload */}
         <Grid item xs={12} sx={{ mt: 3 }}>
-          <Typography variant="h6">แนบไฟล์ PDF (ถ้ามี)</Typography>
+          <Typography variant="h6" sx={{fontWeight:'bold'}}>แนบไฟล์ PDF (ถ้ามี)</Typography>
           <input
             type="file"
             accept="application/pdf"

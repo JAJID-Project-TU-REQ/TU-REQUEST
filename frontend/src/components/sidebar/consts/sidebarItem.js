@@ -40,8 +40,31 @@ export const studentItem = [
             {
                 id: 4,
                 label: 'คำร้องขอเปลี่ยนกลุ่มเรียน (Section)',
+                routes: 'change-section',
+                label: 'คำร้องจดทะเบียนรายวิชา',
+                routes: 'add-subject'
+            },
+            {
+                id: 3,
+                label: 'คำร้องถอนรายวิชาล่าช้า',
+                routes: 'withdraw-subject'
+            },
+            {
+                id: 4,
+                label: 'คำร้องขอจดทะเบียนต่ำกว่า/เกินกว่าข้อบังคับ',
+                routes: 'normal-request'
+            },
+            {
+                id: 5,
+                label: 'คำร้องขอจดทะเบียนข้ามสถาบัน', 
+                routes: 'normal-request'
+            },
+            {
+                id: 4,
+                label: 'คำร้องขอเปลี่ยนกลุ่มเรียน (Section)',
                 routes: 'change-section'
             }
+
 
         ]
     },
@@ -53,7 +76,10 @@ export const studentItem = [
             {
                 id: 1,
                 label: 'คำร้องขอผ่อนผันการชำระค่าใช้จ่ายจดทะเบียน',
+                label: 'คำร้องขอผ่อนผันการชำระค่าใช้จ่ายจดทะเบียน',
                 routes: 'normal-request'
+            },
+            {
             },
             {
                 id: 2,
@@ -63,13 +89,21 @@ export const studentItem = [
            {
                 id: 3,
                 label: 'คำร้องขอปรับโครงสร้างหนี้ผ่อนผัน',
+                label: 'คำร้องขอคืนค่าธรรมเนียม',
+                routes: 'normal-request'
+           },
+           {
+                id: 3,
+                label: 'คำร้องขอปรับโครงสร้างหนี้ผ่อนผัน',
                 routes: 'normal-request'
            }
+
         ]
     },
     {
         id: 3,
         icon: <PersonSearchIcon/>,
+        label: 'คำร้องสถานะนักศึกษา',
         label: 'คำร้องสถานะนักศึกษา',
         children: [
             {

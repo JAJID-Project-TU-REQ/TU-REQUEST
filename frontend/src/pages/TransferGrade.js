@@ -112,7 +112,7 @@ function TransferGrade() {
         alert("ส่งคำร้องสำเร็จ"); // Success alert
         navigate('/');
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Error posting form data:", err);
         alert("เกิดข้อผิดพลาดในการส่งคำร้อง");
       });
@@ -165,4 +165,4 @@ function TransferGrade() {
   )
 }
 
-export default TransferGrade
+export default TransferGrade;

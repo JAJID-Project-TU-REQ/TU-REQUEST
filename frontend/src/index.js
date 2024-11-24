@@ -59,6 +59,7 @@ const router = createBrowserRouter([
           },
           {
             path:"transfer-grade",
+            path:"transfer-grade",
             element: <TransferGrade/>,
           },
           {
