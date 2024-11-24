@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import ArticleIcon from "@mui/icons-material/Article";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import { Grid2,Container,Paper,Table,TableContainer,TableHead,TableRow,TableCell,TableBody,ButtonGroup,Button } from "@mui/material";
+import { TableContainer, TableHead, TableRow, TableCell, TableBody, ButtonGroup, Button } from "@mui/material";
 import Footer from "../components/footer";
 import { Link } from "react-router-dom";
 import StudentForms from "../method/StudentForms";
@@ -33,17 +33,16 @@ CustomTabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
+
 
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
   const [studentUsername, setStudentUsername] = useState("");
   const { forms, loading, error } = StudentForms(studentUsername);
+
+  const pendingForms = forms?.filter((form) => form.status === "pending") || [];
+  const successForms = forms?.filter((form) => form.status !== "pending") || [];
+
 
   useEffect(() => {
     const storedStudentUsername = localStorage.getItem("username");
@@ -57,19 +56,19 @@ export default function BasicTabs() {
   };
 
   return (
-    <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%'}}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
       <Toolbar />
       <Box >
         <Typography variant="h4" sx={{ fontWeight: "bold" }}>
           สถานะคำร้อง
         </Typography>
         <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-           REQUEST STATUS
+          REQUEST STATUS
         </Typography>
       </Box>
-      <Box sx={{width: '100%',}}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider",width: '100%', }}>
-          <Tabs value={value} onChange={handleChange} centered sx={{display: 'flex', justifyContent: 'flex-start', width: '100%'}}>
+      <Box sx={{ width: '100%', }}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider", width: '100%', }}>
+          <Tabs value={value} onChange={handleChange} centered sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%' }}>
             <Tab
               icon={<ArticleIcon />}
               iconPosition=""
@@ -88,33 +87,33 @@ export default function BasicTabs() {
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-          <TableContainer sx={{display: 'flex', flexDirection: 'column', width: '100%'}}>
+          <TableContainer sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
             <TableHead>
-              <TableRow sx={{display: 'flex', width: '100%'}}>
-                <TableCell align="center" sx={{ py: 0.5,width:"100%"}}>วันที่</TableCell>
-                <TableCell align="center" sx={{ py: 0.5,width:"100%"}}>ประเภท</TableCell>
-                <TableCell align="center" sx={{ py: 0.5,width:"100%"}}>หัวข้อคำร้อง</TableCell>
-                <TableCell align="center" sx={{ py: 0.5,width:"100%"}}>รายละเอียด</TableCell>
+              <TableRow sx={{ display: 'flex', width: '100%' }}>
+                <TableCell align="center" sx={{ py: 0.5, width: "100%" }}>วันที่</TableCell>
+                <TableCell align="center" sx={{ py: 0.5, width: "100%" }}>ประเภท</TableCell>
+                <TableCell align="center" sx={{ py: 0.5, width: "100%" }}>หัวข้อคำร้อง</TableCell>
+                <TableCell align="center" sx={{ py: 0.5, width: "100%" }}>รายละเอียด</TableCell>
               </TableRow>
             </TableHead>
-            
+
             <TableBody>
               {loading && <TableRow><TableCell colSpan={4}>Loading...</TableCell></TableRow>}
               {error && <TableRow><TableCell colSpan={4}>{error}</TableCell></TableRow>}
               {forms.length > 0 ? (
-                  forms.sort((a, b) => new Date(b.date) - new Date(a.date)).map((form) => (
-                    console.log(form.date),
-                  <TableRow sx={{display: 'flex', width: '100%'}}>
-                      <TableCell align="center" sx={{ py: 0.5,width:"100%" }}>{form.date}</TableCell>
-                      <TableCell align="center" sx={{ py: 0.5,width:"100%" }}>{form.form_type}</TableCell>
-                      <TableCell align="center" sx={{ py: 0.5,width:"100%" }}>{form.additional_fields.title}</TableCell>
-                      <TableCell align="center" sx={{ py: 0.5,width:"100%" }}>
-                        <Button component={Link} to={`student-detail/${form.form_id}`} >รายละเอียด</Button>
-                      </TableCell>
-                    </TableRow>
-               ))
+                forms.sort((a, b) => new Date(b.date) - new Date(a.date)).map((form) => (
+                  console.log(form.date),
+                  <TableRow sx={{ display: 'flex', width: '100%' }}>
+                    <TableCell align="center" sx={{ py: 0.5, width: "100%" }}>{form.date}</TableCell>
+                    <TableCell align="center" sx={{ py: 0.5, width: "100%" }}>{form.form_type}</TableCell>
+                    <TableCell align="center" sx={{ py: 0.5, width: "100%" }}>{form.additional_fields.title}</TableCell>
+                    <TableCell align="center" sx={{ py: 0.5, width: "100%" }}>
+                      <Button component={Link} to={`student-detail/${form.form_id}`} >รายละเอียด</Button>
+                    </TableCell>
+                  </TableRow>
+                ))
               ) : (
-                <TableRow sx={{display: 'flex', width: '100%'}}>
+                <TableRow sx={{ display: 'flex', width: '100%' }}>
                   <TableCell align="" sx={{ py: 0.5, flexGrow: 1 }}>No forms found for this student.</TableCell>
                 </TableRow>
               )}
@@ -122,10 +121,72 @@ export default function BasicTabs() {
           </TableContainer>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          <Typography>สถานะคำร้องระหว่างการดำเนินการ</Typography>
+        <TableContainer sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+            <TableHead>
+              <TableRow sx={{ display: 'flex', width: '100%' }}>
+                <TableCell align="center" sx={{ py: 0.5, width: "100%" }}>วันที่</TableCell>
+                <TableCell align="center" sx={{ py: 0.5, width: "100%" }}>ประเภท</TableCell>
+                <TableCell align="center" sx={{ py: 0.5, width: "100%" }}>หัวข้อคำร้อง</TableCell>
+                <TableCell align="center" sx={{ py: 0.5, width: "100%" }}>รายละเอียด</TableCell>
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
+              {loading && <TableRow><TableCell colSpan={4}>Loading...</TableCell></TableRow>}
+              {error && <TableRow><TableCell colSpan={4}>{error}</TableCell></TableRow>}
+              {pendingForms.length > 0 ? (
+                pendingForms.sort((a, b) => new Date(b.date) - new Date(a.date)).map((form) => (
+                  console.log(form.date),
+                  <TableRow sx={{ display: 'flex', width: '100%' }}>
+                    <TableCell align="center" sx={{ py: 0.5, width: "100%" }}>{form.date}</TableCell>
+                    <TableCell align="center" sx={{ py: 0.5, width: "100%" }}>{form.form_type}</TableCell>
+                    <TableCell align="center" sx={{ py: 0.5, width: "100%" }}>{form.additional_fields.title}</TableCell>
+                    <TableCell align="center" sx={{ py: 0.5, width: "100%" }}>
+                      <Button component={Link} to={`student-detail/${form.form_id}`} >รายละเอียด</Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow sx={{ display: 'flex', width: '100%' }}>
+                  <TableCell align="" sx={{ py: 0.5, flexGrow: 1 }}>No forms found for this student.</TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </TableContainer>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
-          <Typography>คำร้องเสร็จแล้ว</Typography>
+        <TableContainer sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+            <TableHead>
+              <TableRow sx={{ display: 'flex', width: '100%' }}>
+                <TableCell align="center" sx={{ py: 0.5, width: "100%" }}>วันที่</TableCell>
+                <TableCell align="center" sx={{ py: 0.5, width: "100%" }}>ประเภท</TableCell>
+                <TableCell align="center" sx={{ py: 0.5, width: "100%" }}>หัวข้อคำร้อง</TableCell>
+                <TableCell align="center" sx={{ py: 0.5, width: "100%" }}>รายละเอียด</TableCell>
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
+              {loading && <TableRow><TableCell colSpan={4}>Loading...</TableCell></TableRow>}
+              {error && <TableRow><TableCell colSpan={4}>{error}</TableCell></TableRow>}
+              {successForms.length > 0 ? (
+                successForms.sort((a, b) => new Date(b.date) - new Date(a.date)).map((form) => (
+                  console.log(form.date),
+                  <TableRow sx={{ display: 'flex', width: '100%' }}>
+                    <TableCell align="center" sx={{ py: 0.5, width: "100%" }}>{form.date}</TableCell>
+                    <TableCell align="center" sx={{ py: 0.5, width: "100%" }}>{form.form_type}</TableCell>
+                    <TableCell align="center" sx={{ py: 0.5, width: "100%" }}>{form.additional_fields.title}</TableCell>
+                    <TableCell align="center" sx={{ py: 0.5, width: "100%" }}>
+                      <Button component={Link} to={`student-detail/${form.form_id}`} >รายละเอียด</Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow sx={{ display: 'flex', width: '100%' }}>
+                  <TableCell align="" sx={{ py: 0.5, flexGrow: 1 }}>No forms found for this student.</TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </TableContainer>
         </CustomTabPanel>
         <Footer />
       </Box>

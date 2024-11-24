@@ -25,6 +25,12 @@ class ApprovalStatus(str, Enum):
     approved = "approved"
     disapproved = "disapproved"
 
+class ApprovalRequest(BaseModel):
+    form_id: str
+    professor: str
+    action: ApprovalStatus  # "approved" หรือ "disapproved"
+    comment: Optional[str] = None  # ใช้เฉพาะกรณีที่ไม่อนุมัติ
+
 class ProfessorApproval(BaseModel):
     professor: str
     status: ApprovalStatus = ApprovalStatus.pending
@@ -37,6 +43,7 @@ class BaseFormModel(BaseModel):
     semester_year: str
     semester: str
     senderId: str
+    sender_advisor : str
     status: ApprovalStatus = ApprovalStatus.pending
     approval_chain: List[ProfessorApproval] = []  # List of professors who need to approve
     date: str = Field(default_factory=lambda: datetime.utcnow().strftime('%Y-%m-%d'))

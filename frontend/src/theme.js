@@ -31,6 +31,7 @@ const theme = createTheme({
     fontStyle: 'bold',
 
   },
+  
 });
 
 export default theme;

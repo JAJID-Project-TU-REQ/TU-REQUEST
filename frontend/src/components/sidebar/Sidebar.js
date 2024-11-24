@@ -12,7 +12,7 @@ import { styles } from './styles';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { toggle } from '../../redux/toggleSlice';
-import {Grid2, Portal} from '@mui/material';
+import { Grid2, Portal } from '@mui/material';
 import logo from '../../assets/images/logo.png';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import MyListItem from '../common/listItem/MyListItem';
@@ -20,60 +20,59 @@ import MyListItem from '../common/listItem/MyListItem';
 
 const Sidebar = () => {
   const navigate = useNavigate();
-  
+
   const isToggled = useSelector((state) => state.toggle.value);
   const dispatch = useDispatch();
   const handleToggle = () => {
-    dispatch(toggle());  
+    dispatch(toggle());
   };
 
   const role = localStorage.getItem('role');
-  const sidebarItem = (role === 'student' ? studentItem: professorItem);
+  const sidebarItem = (role === 'student' ? studentItem : professorItem);
 
   return (
     <Grid2>
-   
-    <SwipeableDrawer
-      anchor="left"
-      open={isToggled}
-      sx={{width: {sm: 300,},[`& .MuiDrawer-paper`]: { width: 300, }}}
-      onClose={handleToggle}
-      variant={"temporary"}
-    >
-       <Toolbar >
-            <Grid2 item sx={{flexGrow: 1}}>
+      <SwipeableDrawer
+        anchor="left"
+        open={isToggled}
+        sx={{ width: { sm: 300, }, [`& .MuiDrawer-paper`]: { width: 300, } }}
+        onClose={handleToggle}
+        variant={"temporary"}
+      >
+        <Toolbar >
+          <Grid2 item sx={{ flexGrow: 1 }}>
             <img src={logo} alt="Thamasart" style={{ height: '40px' }} />
-            </Grid2> 
+          </Grid2>
         </Toolbar>
-      <Box >
-        <Divider />
-        <List> 
+        <Box >
+          <Divider />
+          <List>
             <ListItemButton
-                  
-                  onClick={() => {
-                    navigate('/');
-                  }}
-                  sx={{borderRadius: 2, mb: 1}}
+
+              onClick={() => {
+                navigate('/');
+              }}
+              sx={{ borderRadius: 2, mb: 1 }}
+            >
+              <ListItemIcon
+                sx={styles.icons}
               >
-                <ListItemIcon
-                  sx={styles.icons}
-                >
-                  <AccessTimeIcon/>
-                </ListItemIcon>
-                <ListItemText
-                  sx={styles.text}
-                  primary={'สถานะ'}
-                />
-              </ListItemButton> 
-              <Divider/>
+                <AccessTimeIcon />
+              </ListItemIcon>
+              <ListItemText
+                sx={styles.text}
+                primary={role === "student" ? "สถานะ" : "ทั้งหมด"} 
+              />
+            </ListItemButton>
+            <Divider />
             {sidebarItem.map((item, index) => (
-              <MyListItem item={item} key={item.id} styles={styles}/>
+              <MyListItem item={item} key={item.id} styles={styles} />
             ))}
           </List>
-          </Box>
-    </SwipeableDrawer>
+        </Box>
+      </SwipeableDrawer>
     </Grid2>
-    
+
   );
 };
 

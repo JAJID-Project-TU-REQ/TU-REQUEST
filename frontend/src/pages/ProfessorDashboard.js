@@ -16,24 +16,170 @@ import Tab from '@mui/material/Tab';
 import ProfessorForms from "../method/ProfessorForms";
 import { Link } from "react-router-dom";
 import { Toolbar, Typography } from "@mui/material";
+import { useParams } from "react-router-dom";
 
 function ProfessorDashboard() {
+
+  
+  const {form_type} = useParams()
+  console.log("Params: " + form_type)
   const [professorUsername, setProfessorUsername] = useState("");
 
+  
   useEffect(() => {
-    // Get professor name from localStorage
+
     const storedProfessorUsername = localStorage.getItem("username");
     if (storedProfessorUsername) {
       setProfessorUsername(storedProfessorUsername);
     }
   }, []);
 
-  // Fetch the forms using the custom hook
+
   const { forms: fetchedForms, loading, error } = ProfessorForms(professorUsername);
   console.log(fetchedForms);
 
+  console.log("jeang: "+fetchedForms.form_type)
+
+  const allPendingForms = fetchedForms?.filter(
+    (form) =>
+      form.approval_chain.some(
+        (entry) => entry.professor === professorUsername && entry.status === "pending"
+      )
+  ) || [];
+  const normalPendingForms = fetchedForms?.filter(
+    (form) =>
+      form.form_type === "ทั่วไป" &&
+      form.approval_chain.some(
+        (entry) => entry.professor === professorUsername && entry.status === "pending"
+      )
+  ) || [];
+  const transferPendingForms = fetchedForms?.filter(
+    (form) =>
+      form.form_type === "เทียบโอนรายวิชา(มหาวิทยาลัยอื่น)" &&
+      form.approval_chain.some(
+        (entry) => entry.professor === professorUsername && entry.status === "pending"
+      )
+  ) || [];
+  const transferELPendingForms = fetchedForms?.filter(
+    (form) =>
+      form.form_type === "เทียบโอนรายวิชา(E-Learning)" &&
+      form.approval_chain.some(
+        (entry) => entry.professor === professorUsername && entry.status === "pending"
+      )
+  ) || [];
+  const transferTUPendingForms = fetchedForms?.filter(
+    (form) =>
+      form.form_type === "เทียบโอนรายวิชา(TU)" &&
+      form.approval_chain.some(
+        (entry) => entry.professor === professorUsername && entry.status === "pending"
+      )
+  ) || [];
+  const transferEnglishPendingForms = fetchedForms?.filter(
+    (form) =>
+      form.form_type === "เทียบโอนรายวิชา(วิชาภาษาอังกฤษ)" &&
+      form.approval_chain.some(
+        (entry) => entry.professor === professorUsername && entry.status === "pending"
+      )
+  ) || [];
+  const quitPendingForms = fetchedForms?.filter(
+    (form) =>
+      form.form_type === "ลาออก" &&
+      form.approval_chain.some(
+        (entry) => entry.professor === professorUsername && entry.status === "pending"
+      )
+  ) || [];
+
+
+  const allcompletedForms = fetchedForms?.filter(
+    (form) =>
+      
+      form.approval_chain.some(
+        (entry) =>
+          entry.professor === professorUsername &&
+          (entry.status === "approved" || entry.status === "disapproved")
+      )
+  ) || [];
+  const normalCompletedForms = fetchedForms?.filter(
+    (form) =>
+      form.form_type === "ทั่วไป" &&
+      form.approval_chain.some(
+        (entry) =>
+          entry.professor === professorUsername &&
+          (entry.status === "approved" || entry.status === "disapproved")
+      )
+  ) || [];
+  const transferCompletedForms = fetchedForms?.filter(
+    (form) =>
+      form.form_type === "เทียบโอนรายวิชา(มหาวิทยาลัยอื่น)" &&
+      form.approval_chain.some(
+        (entry) =>
+          entry.professor === professorUsername &&
+          (entry.status === "approved" || entry.status === "disapproved")
+      )
+  ) || [];
+  const transferELCompletedForms = fetchedForms?.filter(
+    (form) =>
+      form.form_type === "เทียบโอนรายวิชา(E-Learning)" &&
+      form.approval_chain.some(
+        (entry) =>
+          entry.professor === professorUsername &&
+          (entry.status === "approved" || entry.status === "disapproved")
+      )
+  ) || [];
+  const transferTUCompletedForms = fetchedForms?.filter(
+    (form) =>
+      form.form_type === "เทียบโอนรายวิชา(TU)" &&
+      form.approval_chain.some(
+        (entry) =>
+          entry.professor === professorUsername &&
+          (entry.status === "approved" || entry.status === "disapproved")
+      )
+  ) || [];
+  const transferEnglishCompletedForms = fetchedForms?.filter(
+    (form) =>
+      form.form_type === "เทียบโอนรายวิชา(วิชาภาษาอังกฤษ)" &&
+      form.approval_chain.some(
+        (entry) =>
+          entry.professor === professorUsername &&
+          (entry.status === "approved" || entry.status === "disapproved")
+      )
+  ) || [];
+  const quitCompletedForms = fetchedForms?.filter(
+    (form) =>
+      form.form_type === "ลาออก" &&
+      form.approval_chain.some(
+        (entry) =>
+          entry.professor === professorUsername &&
+          (entry.status === "approved" || entry.status === "disapproved")
+      )
+  ) || [];
+
+
+    let pendingForms = allPendingForms;
+    let completedForms = allcompletedForms;
+
+    if (form_type === 'normal_request') {
+      pendingForms = normalPendingForms;
+      completedForms = normalCompletedForms; 
+    }else if (form_type === 'transfer_grade'){
+      pendingForms = transferPendingForms
+      completedForms = transferCompletedForms
+    }else if (form_type === 'exemption_e-learning'){
+      pendingForms = transferELPendingForms
+      completedForms = transferELCompletedForms
+    }else if (form_type === 'exemption_english'){
+      pendingForms = transferEnglishPendingForms
+      completedForms = transferEnglishCompletedForms
+    }else if (form_type === 'exemption_TU'){
+      pendingForms = transferTUPendingForms
+      completedForms = transferTUCompletedForms
+    }else if (form_type === 'quit'){
+      pendingForms = quitPendingForms
+      completedForms = quitCompletedForms
+    }
+  
+
   // Declare a constant 'forms' to store the fetched data
-  const forms = fetchedForms || [];
   const role = localStorage.getItem('role');
   console.log(role === 'professor');
   console.log(localStorage.getItem('token'));
@@ -60,23 +206,22 @@ function ProfessorDashboard() {
               <TableBody>
                 {loading && <TableRow><TableCell colSpan={4}>Loading...</TableCell></TableRow>}
                 {error && <TableRow><TableCell colSpan={4}>{error}</TableCell></TableRow>}
-                {forms.length > 0 ? (
-                  forms.sort((a, b) => new Date(b.date) - new Date(a.date)).map((form) => (
-                    console.log(form.date),
+                {pendingForms.length > 0 ? (
+                  pendingForms.sort((a, b) => new Date(b.date) - new Date(a.date)).map((form) => (
                     <TableRow key={form.form_id}>
                       <TableCell align="center" sx={{ py: 0.5 }}>{form.date}</TableCell>
                       <TableCell align="center" sx={{ py: 0.5 }}>{form.form_type}</TableCell>
                       <TableCell align="center" sx={{ py: 0.5 }}>{form.additional_fields.title}</TableCell>
                       <TableCell align="center" sx={{ py: 0.5 }}>
-                        <ButtonGroup color="primary" aria-label="outlined primary button group">
-                          <Button component={Link} to={`professor-detail/${form.form_id}`} >รายละเอียด</Button>
+                        <ButtonGroup color="primary">
+                          <Button component={Link} to={`professor-detail/${form.form_id}`}>รายละเอียด</Button>
                         </ButtonGroup>
                       </TableCell>
                     </TableRow>
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={4} align="center">No forms found for this professor.</TableCell>
+                    <TableCell colSpan={4} align="center">ไม่มีคำร้องที่รอดำเนินการ</TableCell>
                   </TableRow>
                 )}
               </TableBody>
@@ -103,23 +248,22 @@ function ProfessorDashboard() {
               <TableBody>
                 {loading && <TableRow><TableCell colSpan={4}>Loading...</TableCell></TableRow>}
                 {error && <TableRow><TableCell colSpan={4}>{error}</TableCell></TableRow>}
-                {forms.length > 0 ? (
-                  forms.sort((a, b) => new Date(b.date) - new Date(a.date)).map((form) => (
-                    console.log(form.date),
+                {completedForms.length > 0 ? (
+                  completedForms.sort((a, b) => new Date(b.date) - new Date(a.date)).map((form) => (
                     <TableRow key={form.form_id}>
                       <TableCell align="center" sx={{ py: 0.5 }}>{form.date}</TableCell>
                       <TableCell align="center" sx={{ py: 0.5 }}>{form.form_type}</TableCell>
                       <TableCell align="center" sx={{ py: 0.5 }}>{form.additional_fields.title}</TableCell>
                       <TableCell align="center" sx={{ py: 0.5 }}>
-                        <ButtonGroup color="primary" aria-label="outlined primary button group">
-                          <Button component={Link} to={`professor-detail/${form.form_id}`} >รายละเอียด</Button>
+                        <ButtonGroup color="primary">
+                          <Button component={Link} to={`professor-detail/${form.form_id}`}>รายละเอียด</Button>
                         </ButtonGroup>
                       </TableCell>
                     </TableRow>
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={4} align="center">No forms found for this professor.</TableCell>
+                    <TableCell colSpan={4} align="center">ไม่มีคำร้องที่ดำเนินการแล้ว</TableCell>
                   </TableRow>
                 )}
               </TableBody>

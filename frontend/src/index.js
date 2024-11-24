@@ -14,7 +14,6 @@ import theme from "./theme";
 import Detail from "./pages/Detail";
 import { Provider } from "react-redux";
 import store from "./redux/store";
-import StudentFormDetail from "./pages/StudentFormDetail";
 import { useSelector } from "react-redux";
 import ProtectedStudentLayout from "./method/protectedLayout/ProtectedStudentLayout";
 import ProtectedprofessorLayout from "./method/protectedLayout/ProtectedprofessorLayout";
@@ -22,6 +21,13 @@ import Error from "./pages/error";
 import Header from "./components/common/header/Header";
 import AppTest from "./AppTest";
 import TransferGrade from "./pages/TransferGrade";
+import Quit from './pages/Quit'
+import ExemptionEL from "./pages/ExemptionEL";
+import ExemptionTU from "./pages/ExemptionTU";
+import ExemptionELN from "./pages/ExemptionELearning";
+import RegistLate from "./pages/RegistLate";
+import WithdrawLate from "./pages/WithdrawLate";
+import InfoPage from "./pages/InfoPage";
 
 const IsLogin = () => {
   const token = localStorage.getItem('token');
@@ -52,22 +58,60 @@ const router = createBrowserRouter([
             element: <NormalRequest />
           },
           {
-            path:"trasfer-grade",
+            path:"transfer-grade",
             element: <TransferGrade/>,
+          },
+          {
+            path:"quit",
+            element: <Quit/>,
+          },
+          {
+            path:"exemption-el",
+            element: <ExemptionEL/>,
+          },
+          {
+            path: "exemption-TU",
+            element: <ExemptionTU/>
+          },
+          {
+            path: "exemption-elearning",
+            element: <ExemptionELN/>
+          },
+          {
+            path: "add-subject",
+            element: <RegistLate/>
+          },
+          {
+            path: "withdraw-subject",
+            element: <WithdrawLate/>
+          },
+          {
+            path: "info-page",
+            element: <InfoPage/>
           },
           {
             path: "student-detail/:form_id",
             element: < Detail/>
           },
+          
+
         ]
       },
       {
         element: <ProtectedprofessorLayout />,
         children:
-        [
+        [ 
+          {
+            path: "professor-dashboard/:form_type",
+            element: <ProfessorDashboard/>
+          },
+          {
+            path: "professor-dashboard/:form_type/professor-detail/:form_id",
+            element: <Detail />,
+          },
           {
             path: "professor-detail/:form_id",
-            element: <Detail />,
+            element: <Detail/>
           }
         ]
       },

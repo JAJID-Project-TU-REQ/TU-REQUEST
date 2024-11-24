@@ -8,11 +8,12 @@ from fastapi_login.exceptions import InvalidCredentialsException
 from fastapi.security import OAuth2PasswordRequestForm
 from typing import List, Optional
 from datetime import datetime
+from urllib.parse import quote
 
 #App object
 app = FastAPI()
 
-from model import Users, BaseFormModel, ApprovalStatus, Subject
+from model import Users, BaseFormModel, ApprovalStatus, ApprovalRequest, Subject
 
 origins = ["http://localhost:3000"] # Replace with your frontend URL
 
@@ -46,6 +47,7 @@ async def load_user(username: str):
     user = await users_collection.find_one({"username": username})  # Use the reference here
     return user
 
+#สำหรับ Login
 @app.post("/auth/token")
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     user = await users_collection.find_one({"username": form_data.username})
@@ -69,7 +71,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
             "room": user["room"]
             }
 
-# Register Endpoint
+#สมัครสมาชิก
 @app.post("/register")
 async def register(user: Users):
     existing_user = await users_collection.find_one({"username": user.username})
@@ -93,7 +95,7 @@ async def register(user: Users):
     await users_collection.insert_one(new_user)
     return {"message": "User registered successfully"}
  
-#Create method for all-form
+#Create method for form
 @app.post("/forms")
 async def submit_form(form_data: BaseFormModel):
     # Convert form data to a dictionary and exclude unset fields
@@ -152,47 +154,48 @@ async def read_all_form():
         forms.append(BaseFormModel(**document))
     return forms
 
-# Endpoint for professor approval or disapproval
-@app.patch("/forms/{form_id}/approve")
-async def approve_form(form_id: str, professor: str, status: ApprovalStatus, comment: Optional[str] = None):
-    # Retrieve the form by ID
-    form = await forms_collection.find_one({"form_id": form_id})
-    if not form:
-        raise HTTPException(status_code=404, detail="Form not found")
+@app.post("/approve_form/")
+async def approve_form(approval_request: ApprovalRequest):
+    try:
+        # ค้นหาฟอร์มที่ตรงกับ form_id
+        form = await forms_collection.find_one({"form_id": approval_request.form_id})
+        
+        if not form:
+            raise HTTPException(status_code=404, detail="Form not found")
 
-    # Find the professor's entry in the approval_chain
-    approval_chain = form.get("approval_chain", [])
-    current_approval = next((a for a in approval_chain if a["professor"] == professor), None)
+        # ค้นหาตำแหน่งของอาจารย์ใน approval_chain
+        approval_chain = form.get("approval_chain", [])
+        professor_index = next((index for index, item in enumerate(approval_chain) if item["professor"] == approval_request.professor), -1)
+        
+        if professor_index == -1:
+            raise HTTPException(status_code=404, detail="Professor not found in approval chain")
 
-    if not current_approval:
-        raise HTTPException(status_code=400, detail="Professor not found in approval chain")
-    
-    # Update status and comment if disapproved
-    current_approval["status"] = status
-    current_approval["comment"] = comment if status == ApprovalStatus.disapproved else None
+        # ตรวจสอบสถานะของอาจารย์คนก่อนหน้านี้
+        if professor_index > 0:
+            previous_approval = approval_chain[professor_index - 1]
+            if previous_approval["status"] != ApprovalStatus.approved:
+                raise HTTPException(status_code=400, detail="Previous professor has not approved yet")
 
-    # Set form status to disapproved if any disapproval occurs
-    if status == ApprovalStatus.disapproved:
-        form["status"] = ApprovalStatus.disapproved
-    else:
-        # Check if all approvals are completed and mark form as approved if so
-        form["status"] = (
-            ApprovalStatus.approved if all(a["status"] == ApprovalStatus.approved for a in approval_chain)
-            else ApprovalStatus.pending
-        )
+        # อัปเดต status และ comment ใน approval_chain
+        approval_chain[professor_index]["status"] = approval_request.action
+        if approval_request.action == ApprovalStatus.disapproved:
+            approval_chain[professor_index]["comment"] = approval_request.comment  # เพิ่ม comment เมื่อไม่อนุมัติ
+        else:
+            approval_chain[professor_index]["comment"] = None  # ลบ comment ถ้าอนุมัติ
 
-    # Update the form in the database
-    result = await forms_collection.update_one(
-        {"form_id": form_id},
-        {"$set": {"approval_chain": approval_chain, "status": form["status"]}}
-    )
+        # อัปเดตสถานะของฟอร์ม (ถ้าทุกคนอนุมัติ)
+        if all(item["status"] == ApprovalStatus.approved for item in approval_chain):
+            form["status"] = ApprovalStatus.approved
+        elif any(item["status"] == ApprovalStatus.disapproved for item in approval_chain):
+            form["status"] = ApprovalStatus.disapproved
 
-    if result.modified_count == 0:
-        raise HTTPException(status_code=500, detail="Failed to update form status")
+        # อัปเดตข้อมูลในฐานข้อมูล
+        await forms_collection.update_one({"form_id": approval_request.form_id}, {"$set": {"approval_chain": approval_chain, "status": form["status"]}})
 
-    return {"message": "Form status updated successfully", "form": form}
+        return {"message": "Approval status updated successfully"}
 
-
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 #Read-all form query by professor
 @app.get("/professor_forms/{professor}", response_model=List[BaseFormModel])
@@ -252,7 +255,7 @@ async def get_professor():
         return professors
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
-    
+
 #ดึงข้อมูลรหัสวิชาทั้งหมด
 @app.get("/get_subjects", response_model=List[Subject])
 async def get_subjects():
@@ -263,6 +266,21 @@ async def get_subjects():
         return subjects
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+
+@app.get("/find-user-by-name/{full_name}")
+async def find_user_by_name(full_name: str):
+    # ค้นหาจากทั้งชื่อภาษาไทยและภาษาอังกฤษ
+    user = await users_collection.find_one({
+        "$or": [
+            {"name_en": full_name},  # ค้นหาจากชื่อภาษาอังกฤษ
+            {"name_th": full_name}   # ค้นหาจากชื่อภาษาไทย
+        ]
+    })
+    
+    if user:
+        return {"username": user["username"]}  # คืนค่าชื่อผู้ใช้งาน
+    else:
+        raise HTTPException(status_code=404, detail="User not found")
 
 #Delete form
 @app.delete("/forms/{form_id}")
@@ -313,16 +331,23 @@ async def get_pdf(file_id: str):
     # ตรวจสอบว่า _id เป็น ObjectId ที่ถูกต้องหรือไม่
     try:
         file_object_id = ObjectId(file_id)
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=400, detail="Invalid file ID format")
 
     # ดึงไฟล์จาก GridFS
     try:
         grid_out = await fs_bucket.open_download_stream(file_object_id)
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=404, detail="File not found")
 
-    # ส่งคืนไฟล์ PDF
-    return StreamingResponse(grid_out, media_type="application/pdf", headers={
-        "Content-Disposition": f"inline; filename={grid_out.filename}"
-    })
+    # เตรียมชื่อไฟล์โดยเข้ารหัสเป็น UTF-8
+    filename_encoded = quote(grid_out.filename)
+
+    # ส่งคืนไฟล์ PDF พร้อม header ที่รองรับ Unicode
+    return StreamingResponse(
+        grid_out,
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": f"inline; filename*=UTF-8''{filename_encoded}"
+        }
+    )

@@ -8,14 +8,14 @@ const SelectProf = (props) => {
   if (error) return <div>{error}</div>;
 
   return (
-        <FormControl fullWidth>
-          <InputLabel >อาจารย์</InputLabel>
-          <Select label = "อาจารย์" onChange={props.onChange} sx={{ width: '150px', height: '50px',borderRadius:5 }}>
+        
+          
+          <Select  onChange={props.onChange} sx={{ width: '150px', height: '50px',borderRadius:5 }}>
             {data.length > 0 ? (
-            data.sort((a, b) => new Date(b.date) - new Date(a.date)).map((prof) => (
+            data.filter(prof => prof.username !== 'xmen888').sort((a, b) => new Date(b.date) - new Date(a.date)).map((prof) => (
             <MenuItem value={prof.username} label="select professor">{prof.name_th}</MenuItem>))) : (null)}
           </Select>
-      </FormControl>
+     
   )
 }
 

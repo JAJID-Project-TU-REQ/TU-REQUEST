@@ -6,8 +6,9 @@ import Sidebar from './components/sidebar/Sidebar';
 import Login from './pages/Login';
 import { useSelector } from 'react-redux';
 
-function Fea(params) {
+function Component(params) {
   return (
+
     <div>
       <Sidebar/>
       <Navbar/>
@@ -23,7 +24,7 @@ const App = () => {
   return (
     <Grid2 >
       {isLoggedIn || token ? (
-    <Fea />
+    <Component />
   ) : (
     <Login />
   )}
